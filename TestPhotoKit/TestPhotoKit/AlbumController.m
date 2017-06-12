@@ -13,7 +13,6 @@
 @property (nonatomic, strong) ContainView *containView;
 @property (nonatomic, strong) PHImageRequestOptions *options;
 @property (nonatomic, strong) PHFetchResult<PHAsset *> *assets;
-@property (nonatomic, strong) PHFetchResult<PHAsset *> *assets2;
 @end
 
 @implementation AlbumController
@@ -21,7 +20,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupViews];
-    
     [self getAllPhotosFromAlbum];
     
 #pragma mark 获取video   这段代码这个VC没有使用
@@ -82,9 +80,7 @@
     return cell;
 }
 
-
-
-/**mov转mp4格式 最好设一个block 座位转完码之后的回调*/
+/**mov转mp4格式 最好设一个block 转完码之后的回调*/
 -(void)convertMovWithSourceURL:(NSURL *)sourceUrl fileName:(NSString *)fileName saveExportFilePath:(NSString *)path
 {
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
@@ -93,11 +89,13 @@
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:sourceUrl options:nil];
     NSArray *compatiblePresets=[AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];//输出模式标识符的集合
     if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality]) {
+        
         AVAssetExportSession *exportSession=[[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
-        NSString *resultPath = [path stringByAppendingFormat:@"/%@.mp4",fileName];
+        NSString *resultPath = [path stringByAppendingFormat:@"/%@.mp4",fileName]; 
         exportSession.outputURL=[NSURL fileURLWithPath:resultPath];//输出路径
         exportSession.outputFileType = AVFileTypeMPEG4;//输出类型
         exportSession.shouldOptimizeForNetworkUse = YES;//为网络使用时做出最佳调整
+       
         [exportSession exportAsynchronouslyWithCompletionHandler:^(void){//异步输出转码视频
             switch (exportSession.status) {
                 case AVAssetExportSessionStatusCancelled:
@@ -131,15 +129,5 @@
         }];
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

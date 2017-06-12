@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="L06-x4-tMg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="L06-x4-tMg">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -18,36 +18,58 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s7O-ym-5qN">
-                                <rect key="frame" x="5" y="64" width="90" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s7O-ym-5qN">
+                                <rect key="frame" x="20" y="64" width="560" height="30"/>
                                 <state key="normal" title="相册全部照片">
                                     <color key="titleColor" red="1" green="0.31260623869999998" blue="0.079121982460000004" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="jump:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KDI-rr-xAU"/>
+                                    <action selector="allPhotos:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0Kg-Lt-0m0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kc-ba-PkN">
-                                <rect key="frame" x="35" y="102" width="30" height="30"/>
-                                <state key="normal" title="test"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWf-8b-aFf">
+                                <rect key="frame" x="20" y="140" width="560" height="30"/>
+                                <state key="normal" title="本地图片"/>
                                 <connections>
-                                    <action selector="video:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6NZ-xt-c5i"/>
+                                    <action selector="localImagesShow:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tGL-IC-J5Q"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hW1-xo-3PA">
+                                <rect key="frame" x="20" y="178" width="560" height="30"/>
+                                <state key="normal" title="网络图片"/>
+                                <connections>
+                                    <action selector="networkImagesShow:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QjZ-S0-dCo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kc-ba-PkN">
+                                <rect key="frame" x="20" y="102" width="560" height="30"/>
+                                <state key="normal" title="图片集"/>
+                                <connections>
+                                    <action selector="pictureSet:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q5T-MQ-qRw"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="dWf-8b-aFf" firstAttribute="top" secondItem="4kc-ba-PkN" secondAttribute="bottom" constant="8" id="6kB-AP-CGJ"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="dWf-8b-aFf" secondAttribute="leading" id="7I4-0N-Wfd"/>
                             <constraint firstItem="s7O-ym-5qN" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="BAo-XW-Ezg"/>
+                            <constraint firstItem="hW1-xo-3PA" firstAttribute="top" secondItem="dWf-8b-aFf" secondAttribute="bottom" constant="8" id="GAr-jD-nHK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4kc-ba-PkN" secondAttribute="trailing" id="LKF-4q-HFK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hW1-xo-3PA" secondAttribute="trailing" id="PqF-fA-TwQ"/>
+                            <constraint firstItem="hW1-xo-3PA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="T89-o9-9Sd"/>
                             <constraint firstItem="s7O-ym-5qN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Tfg-Hc-qgf"/>
                             <constraint firstItem="4kc-ba-PkN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="U5I-72-CuZ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="s7O-ym-5qN" secondAttribute="trailing" id="Vtq-Co-S38"/>
                             <constraint firstItem="4kc-ba-PkN" firstAttribute="top" secondItem="s7O-ym-5qN" secondAttribute="bottom" constant="8" id="kdx-pK-uBe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dWf-8b-aFf" secondAttribute="trailing" id="mef-j4-bux"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Uun-65-VaW"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1379" y="431"/>
+            <point key="canvasLocation" x="563" y="408"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3N9-v4-uRJ">

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SmartAblumTableVC.h"
+#import "ShowSmartAblumTableViewController.h"
 @interface ViewController : UIViewController
 
 
