@@ -35,7 +35,7 @@
         NSURL*url =[NSURL URLWithString:UIApplicationOpenSettingsURLString];
         [[UIApplication sharedApplication] openURL:url];
     } else {
-        
+        NSLog(@"无法打开设置");
     }
 }
 
