@@ -140,7 +140,9 @@ WZProtocol_ImageScrollView
 #pragma mark UIPageViewControllerDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     WZImageContainerController *VC = pageViewController.viewControllers.firstObject;
-    [self matchClearImageWith:VC];
+    if (self.VC_currentContainer != VC) {
+        [self matchClearImageWith:VC];
+    }
 }
 
 #pragma mark UIPageViewControllerDataSource
