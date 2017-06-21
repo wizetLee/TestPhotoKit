@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "WZMediaAssetBaseCell.h"
+@class WZMediaAssetCollection;
+@protocol WZProtocol_mediaAsset;
 
 /**
  *  图片目录

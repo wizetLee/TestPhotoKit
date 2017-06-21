@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WZMediaFetcher.h"
+@class WZMediaFetcher;
+@class WZMediaAsset;
 
 @interface WZMediaAssetBaseCell : UICollectionViewCell
 

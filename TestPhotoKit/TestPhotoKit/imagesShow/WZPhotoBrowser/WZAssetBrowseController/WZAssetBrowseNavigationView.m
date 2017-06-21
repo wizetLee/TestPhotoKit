@@ -13,7 +13,7 @@
 + (instancetype)customAssetBrowseNavigationWithDelegate:(id<WZProtocol_assetBrowseNaviagtion>)delegate {
     WZAssetBrowseNavigationView *navigation = [[WZAssetBrowseNavigationView alloc] initWithFrame:CGRectMake(0.0, 0.0, [UIScreen mainScreen].bounds.size.width, 64.0)];
     navigation.delegate = delegate;
-    navigation.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.4];
+    navigation.backgroundColor = [UIColor colorWithRed:51.0 / 255  green:51.0 / 255 blue:51.0 / 255 alpha:0.4];
     
     CGFloat buttonHW = 44.0;
     navigation.button_back = [[UIButton alloc] initWithFrame:CGRectMake(5, 20.0, buttonHW, buttonHW)];
@@ -21,6 +21,8 @@
     navigation.label_title.textAlignment = NSTextAlignmentCenter;
     navigation.label_title = [[UILabel alloc] initWithFrame:CGRectMake(buttonHW, 20.0, [UIScreen mainScreen].bounds.size.width - buttonHW * 2.0, buttonHW)];
     navigation.label_title.textAlignment = NSTextAlignmentCenter;
+    navigation.label_title.textColor = [UIColor whiteColor];
+    
     [navigation addSubview:navigation.label_title];
     [navigation addSubview:navigation.button_selected];
     [navigation addSubview:navigation.button_back];

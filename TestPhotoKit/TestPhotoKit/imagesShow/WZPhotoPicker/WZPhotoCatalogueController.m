@@ -37,8 +37,8 @@
     [_button addTarget:self action:@selector(clickedBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_button];
     [self.contentView sendSubviewToBack:_button];
-    [_button setBackgroundImage:[[self class] imageWithColor:[UIColor redColor]] forState:UIControlStateNormal];
-    [_button setBackgroundImage:[[self class] imageWithColor:[UIColor greenColor]] forState:UIControlStateHighlighted];
+    [_button setBackgroundImage:[[self class] imageWithColor:[UIColor colorWithRed:205.0 / 255 green:205.0 / 255 blue:205.0 / 255 alpha:1.0]] forState:UIControlStateNormal];
+    [_button setBackgroundImage:[[self class] imageWithColor:[UIColor colorWithRed:238.0 / 255 green:238.0 / 255 blue:238.0 / 255 alpha:1.0]] forState:UIControlStateHighlighted];
     
 }
 
@@ -190,7 +190,7 @@
         CGFloat gap = 10.0;
         layout.minimumLineSpacing = gap;
         layout.minimumInteritemSpacing = gap;
-        CGFloat itemW = ([UIScreen mainScreen].bounds.size.width - gap * 2);
+        CGFloat itemW = ([UIScreen mainScreen].bounds.size.width);
         CGFloat itemH = 44 + gap * 2.0;
         layout.itemSize = CGSizeMake(itemW, itemH);
         

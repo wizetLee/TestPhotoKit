@@ -7,6 +7,7 @@
 //
 
 #import "WZMediaAssetBaseCell.h"
+#import "WZMediaFetcher.h"
 
 @implementation WZMediaAssetBaseCell
 
@@ -18,9 +19,11 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+//        self.contentView.layer.borderWidth = 1.0;
+//        self.contentView.layer.borderColor = [UIColor blackColor].CGColor;
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
-        _imageView.backgroundColor = [UIColor redColor];
+        _imageView.backgroundColor = [UIColor lightGrayColor];
         _imageView.layer.masksToBounds = true;
         [self.contentView addSubview:_imageView];
     }
@@ -53,12 +56,13 @@
 #pragma mark Accessor
 - (UIButton *)button_select {
     if (!_button_select) {
-        CGFloat selectedBtnHW = 30;
+        CGFloat selectedBtnHW = 0;
         _button_select = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - selectedBtnHW , 0, selectedBtnHW, selectedBtnHW)];
         [self.contentView addSubview:_button_select];
         [_button_select setImage:[UIImage imageNamed:@"message_oeuvre_btn_normal"] forState:UIControlStateNormal];
         [_button_select setImage:[UIImage imageNamed:@"message_oeuvre_btn_selected"] forState:UIControlStateSelected];
         [_button_select addTarget:self action:@selector(clickedBtn:) forControlEvents:UIControlEventTouchUpInside];
+        _button_select.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
     }
     return _button_select;
 }

@@ -33,6 +33,7 @@
     [self.view addSubview:self.custom_navigation];
     [self.view addSubview:self.custom_tool];
     [self caculateSelected];
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 #pragma mark WZProtocol_assetBrowseNaviagtion
@@ -170,6 +171,9 @@
 }
 
 - (void)caculateImageDataWithImage:(UIImage *)image {
+    if (!image) {
+        return;
+    }
     NSData *data = UIImagePNGRepresentation(image);
     [self caculateImageDataWithData:data];
 }

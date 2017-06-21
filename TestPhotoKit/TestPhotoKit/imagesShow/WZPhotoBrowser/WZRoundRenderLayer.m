@@ -71,7 +71,7 @@
 - (CAShapeLayer *)surfaceLayer {
     if (!_surfaceLayer) {
         _surfaceLayer = [CAShapeLayer layer];
-        _surfaceLayer.strokeColor = [UIColor orangeColor].CGColor;
+        _surfaceLayer.strokeColor = [UIColor colorWithRed:255.0 / 255.0 green:197.0 / 255.0 blue:41.0 / 255.0 alpha:1.0].CGColor;
         _surfaceLayer.fillColor = [UIColor clearColor].CGColor;
         _surfaceLayer.lineWidth = _layerLineWidth;
         _surfaceLayer.lineCap = @"round";
@@ -83,7 +83,7 @@
 - (CAShapeLayer *)bottomLayer {
     if (!_bottomLayer) {
         _bottomLayer = [CAShapeLayer layer];
-        _bottomLayer.strokeColor = [[UIColor lightGrayColor] colorWithAlphaComponent:1].CGColor;
+        _bottomLayer.strokeColor = [UIColor colorWithRed:255.0 / 255.0 green:248.0 / 255.0 blue:234.0 / 255.0 alpha:1.0].CGColor;
         _bottomLayer.fillColor = [UIColor clearColor].CGColor;
         _bottomLayer.lineWidth = _layerLineWidth;
         _bottomLayer.lineCap = @"round";

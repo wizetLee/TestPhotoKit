@@ -7,7 +7,7 @@
 //
 
 #import "WZRemoteImageBrowseController.h"
-
+#import "WZToast.h"
 
 @interface WZRemoteImageBrowseController ()
 
@@ -48,7 +48,7 @@
     for (int i = 0; i < urlArray.count; i++) {
         WZMediaAsset *asset = [[WZMediaAsset alloc] init];
         asset.url_media = urlArray[i];
-        asset.image_thumbnail = [UIImage imageWithColor:[[UIColor lightGrayColor] colorWithAlphaComponent:0.5]];
+        asset.image_thumbnail = [UIImage imageWithColor:[[UIColor blackColor] colorWithAlphaComponent:0.5]];
         [mArray_images addObject:asset];
         
         //使用了url缓存
@@ -77,6 +77,7 @@
 #pragma mark Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)createViews {
@@ -112,7 +113,7 @@
     if (index >= self.array_mediaAsset.count) {
         return;
     }
-    
+    VC.custom_progress.hidden = true;
     WZMediaAsset *asset = nil;
     if (index < self.array_mediaAsset.count ) {
         asset = self.array_mediaAsset[index];
@@ -132,7 +133,7 @@
             [self.imageView_medium sd_cancelCurrentImageLoad];
             //复位状态
             [VC.custom_progress setProgressRate:0];
-            
+             VC.custom_progress.hidden = false;
             if ([asset.url_media isKindOfClass:[NSURL class]]) {
                 
                 [self.imageView_medium sd_setImageWithPreviousCachedImageWithURL:asset.url_media andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -144,14 +145,13 @@
                      所以如果确定文件的大小时，可以将Accept-Encoding修改成非gzip的就可以获取需要的文件大小了
                      */
                     if (expectedSize > 0) {
-                        VC.custom_progress.hidden = false;
                         [VC.custom_progress setProgressRate:receivedSize / (expectedSize * 1.0)];
                     }
                 } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                     VC.custom_progress.hidden = true;
                     if (error) {
                         //显示下载失败的图片
-                        NSLog(@"error: 图片下载失败");
+                        [WZToast toastWithContent:[NSString stringWithFormat:@"图片下载失败:页面id为 %ld", VC.integer_index]];
                     } else {
                         if (image) {
                             asset.image_thumbnail = image;
@@ -161,10 +161,10 @@
                     }
                 }];
             } else {
-                NSLog(@"图片url错误x");
+                [WZToast toastWithContent:@"图片url错误"];
             }
         } else {
-             NSLog(@"匹配不到图片资源");
+            [WZToast toastWithContent:@"匹配不到图片资源"];
         }
     }
     
