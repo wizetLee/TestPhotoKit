@@ -5,9 +5,9 @@
 
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSUInteger, WZToastPositionType) {
-    WZToastPositionType_Middle       = 0,
-    WZToastPositionType_Top          = 1,
-    WZToastPositionType_Bottom       = 2,
+    WZToastPositionTypeMiddle       = 0,
+    WZToastPositionTypeTop          = 1,
+    WZToastPositionTypeBottom       = 2,
 };
 
 @interface WZToast : UIView

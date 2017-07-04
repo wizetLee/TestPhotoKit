@@ -11,7 +11,7 @@
 
 @interface WZRemoteImageBrowseController : WZAssetBrowseController
 
-@property (nonatomic, strong) UIImageView *imageView_medium;
+@property (nonatomic, strong) UIImageView *mediumImageView;
 
 + (void)showRemoteImagesWithURLArray:(NSArray <NSURL *>*)urlArray loactedVC:(UIViewController *)locatedVC;
 

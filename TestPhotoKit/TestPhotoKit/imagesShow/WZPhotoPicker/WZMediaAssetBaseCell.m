@@ -41,9 +41,9 @@
 - (void)setAsset:(WZMediaAsset *)asset {
     if ([asset isKindOfClass:[WZMediaAsset class]]) {
         _asset = asset;
-        self.button_select.selected = _asset.selected;
-        if (_asset.image_thumbnail) {
-            self.imageView.image = _asset.image_thumbnail;
+        self.selectButton.selected = _asset.selected;
+        if (_asset.imageThumbnail) {
+            self.imageView.image = _asset.imageThumbnail;
         } else {
             __weak typeof(self) weakSelf = self;
             [_asset fetchThumbnailImageSynchronous:false handler:^(UIImage *image) {
@@ -54,17 +54,17 @@
 }
 
 #pragma mark Accessor
-- (UIButton *)button_select {
-    if (!_button_select) {
+- (UIButton *)selectButton {
+    if (!_selectButton) {
         CGFloat selectedBtnHW = 0;
-        _button_select = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - selectedBtnHW , 0, selectedBtnHW, selectedBtnHW)];
-        [self.contentView addSubview:_button_select];
-        [_button_select setImage:[UIImage imageNamed:@"message_oeuvre_btn_normal"] forState:UIControlStateNormal];
-        [_button_select setImage:[UIImage imageNamed:@"message_oeuvre_btn_selected"] forState:UIControlStateSelected];
-        [_button_select addTarget:self action:@selector(clickedBtn:) forControlEvents:UIControlEventTouchUpInside];
-        _button_select.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        _selectButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - selectedBtnHW , 0, selectedBtnHW, selectedBtnHW)];
+        [self.contentView addSubview:_selectButton];
+        [_selectButton setImage:[UIImage imageNamed:@"message_oeuvre_btn_normal"] forState:UIControlStateNormal];
+        [_selectButton setImage:[UIImage imageNamed:@"message_oeuvre_btn_selected"] forState:UIControlStateSelected];
+        [_selectButton addTarget:self action:@selector(clickedBtn:) forControlEvents:UIControlEventTouchUpInside];
+        _selectButton.titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
     }
-    return _button_select;
+    return _selectButton;
 }
 
 

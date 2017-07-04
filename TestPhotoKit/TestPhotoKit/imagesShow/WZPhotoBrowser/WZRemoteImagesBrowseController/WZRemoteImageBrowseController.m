@@ -11,7 +11,7 @@
 
 @interface WZRemoteImageBrowseController ()
 
-@property (nonatomic, strong) WZRemoteImageNavigationView *custom_navigation;
+@property (nonatomic, strong) WZRemoteImageNavigationView *navigationView;
 
 @end
 
@@ -19,16 +19,16 @@
 
 //会过滤部分字符串
 + (NSArray <NSURL *>*)fetchUrlArrayAccordingStringArray:(NSArray <NSString *>*)stringArray {
-    NSMutableArray *mArray_url = [NSMutableArray array];
+    NSMutableArray *urlMArray = [NSMutableArray array];
     for (NSString *urlStr in stringArray) {
         if ([urlStr isKindOfClass:[NSString class]] && urlStr.length) {
             NSURL *url = [NSURL URLWithString:urlStr];
             if ([url isKindOfClass:[NSURL class]]) {
-                [mArray_url addObject:url];
+                [urlMArray addObject:url];
             }
         }
     }
-    return mArray_url;
+    return urlMArray;
 }
 
 #pragma mark Initialize
@@ -40,33 +40,33 @@
         return;
     }
     
-    NSMutableArray *mArray_images = [NSMutableArray array];
+    NSMutableArray *imagesMArray = [NSMutableArray array];
     
     SDWebImageDownloader *sdDownloader = [SDWebImageDownloader sharedDownloader];
     [sdDownloader setValue:@"" forHTTPHeaderField:@"Accept-Encoding"];
     
     for (int i = 0; i < urlArray.count; i++) {
         WZMediaAsset *asset = [[WZMediaAsset alloc] init];
-        asset.url_media = urlArray[i];
-        asset.image_thumbnail = [UIImage imageWithColor:[[UIColor blackColor] colorWithAlphaComponent:0.5]];
-        [mArray_images addObject:asset];
+        asset.urlMedia = urlArray[i];
+        asset.imageThumbnail = [UIImage imageWithColor:[[UIColor blackColor] colorWithAlphaComponent:0.5]];
+        [imagesMArray addObject:asset];
         
         //使用了url缓存
-        NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:asset.url_media];
+        NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:asset.urlMedia];
         if (key) {
-            UIImage *image_cache = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:key];
-            if (image_cache) {
-                asset.image_clear = image_cache;
-                asset.image_thumbnail = image_cache;
+            UIImage *cacheImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:key];
+            if (cacheImage) {
+                asset.imageClear = cacheImage;
+                asset.imageThumbnail = cacheImage;
             }
             NSLog(@"远程图片缓存Path:%@", [[SDImageCache sharedImageCache] defaultCachePathForKey:key]);
         }
     }
     
-    if (mArray_images.count) {
+    if (imagesMArray.count) {
         WZRemoteImageBrowseController *VC = [[WZRemoteImageBrowseController alloc] init];
-        VC.delegate_imagesBrowse = (id<WZProtocol_imageBrowse>)locatedVC;
-        VC.array_mediaAsset = mArray_images;
+        VC.imagesBrowseDelegate = (id<WZProtocolImageBrowse>)locatedVC;
+        VC.mediaAssetArray = imagesMArray;
         
         VC.restrictNumber = 9;
         [VC showInIndex:0 withAnimated:true];
@@ -81,7 +81,7 @@
 }
 
 - (void)createViews {
-    [self.view addSubview:self.custom_navigation];
+    [self.view addSubview:self.navigationView];
     [self caculateSelected];
 }
 
@@ -90,17 +90,17 @@
     if (!VC) {
         return;
     }
-    NSUInteger index = VC.integer_index;
-    if (index >= self.array_mediaAsset.count) {
+    NSUInteger index = VC.index;
+    if (index >= self.mediaAssetArray.count) {
         return;
     }
     
-    VC.custom_progress.hidden = true;//隐藏加载视图
-    if (index < self.array_mediaAsset.count) {
-        WZMediaAsset *asset = self.array_mediaAsset[index];
-        NSAssert(asset.image_thumbnail, @"请配置默认图！");
-        if (asset.image_thumbnail) {
-            [VC matchingPicture:asset.image_thumbnail];
+    VC.progress.hidden = true;//隐藏加载视图
+    if (index < self.mediaAssetArray.count) {
+        WZMediaAsset *asset = self.mediaAssetArray[index];
+        NSAssert(asset.imageThumbnail, @"请配置默认图！");
+        if (asset.imageThumbnail) {
+            [VC matchingPicture:asset.imageThumbnail];
         }
     }
 }
@@ -109,34 +109,34 @@
     if (!VC) {
         return;
     }
-    NSUInteger index = VC.integer_index;
-    if (index >= self.array_mediaAsset.count) {
+    NSUInteger index = VC.index;
+    if (index >= self.mediaAssetArray.count) {
         return;
     }
-    VC.custom_progress.hidden = true;
+    VC.progress.hidden = true;
     WZMediaAsset *asset = nil;
-    if (index < self.array_mediaAsset.count ) {
-        asset = self.array_mediaAsset[index];
-        NSAssert(asset.url_media, @"却少媒体URL！");
+    if (index < self.mediaAssetArray.count ) {
+        asset = self.mediaAssetArray[index];
+        NSAssert(asset.urlMedia, @"却少媒体URL！");
         
-        if (asset.string_clearPath) {
-            UIImage *image = [UIImage imageWithContentsOfFile:asset.string_clearPath];
+        if (asset.stringClearPath) {
+            UIImage *image = [UIImage imageWithContentsOfFile:asset.stringClearPath];
             if (image) {
                 [VC matchingPicture:image];
                 return;
             }
         }
-        if (asset.image_clear) {
-            [VC matchingPicture:asset.image_clear];
-        } else if (asset.url_media) {
+        if (asset.imageClear) {
+            [VC matchingPicture:asset.imageClear];
+        } else if (asset.urlMedia) {
             
-            [self.imageView_medium sd_cancelCurrentImageLoad];
+            [self.mediumImageView sd_cancelCurrentImageLoad];
             //复位状态
-            [VC.custom_progress setProgressRate:0];
-             VC.custom_progress.hidden = false;
-            if ([asset.url_media isKindOfClass:[NSURL class]]) {
+            [VC.progress setProgressRate:0];
+             VC.progress.hidden = false;
+            if ([asset.urlMedia isKindOfClass:[NSURL class]]) {
                 
-                [self.imageView_medium sd_setImageWithPreviousCachedImageWithURL:asset.url_media andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                [self.mediumImageView sd_setImageWithPreviousCachedImageWithURL:asset.urlMedia andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     /*
                      这个因为NSHTTPURLResponse中
                      Accept-Encoding为gzip造成的
@@ -145,17 +145,17 @@
                      所以如果确定文件的大小时，可以将Accept-Encoding修改成非gzip的就可以获取需要的文件大小了
                      */
                     if (expectedSize > 0) {
-                        [VC.custom_progress setProgressRate:receivedSize / (expectedSize * 1.0)];
+                        [VC.progress setProgressRate:receivedSize / (expectedSize * 1.0)];
                     }
                 } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                    VC.custom_progress.hidden = true;
+                    VC.progress.hidden = true;
                     if (error) {
                         //显示下载失败的图片
-                        [WZToast toastWithContent:[NSString stringWithFormat:@"图片下载失败:页面id为 %ld", VC.integer_index]];
+                        [WZToast toastWithContent:[NSString stringWithFormat:@"图片下载失败:页面id为 %ld", VC.index]];
                     } else {
                         if (image) {
-                            asset.image_thumbnail = image;
-                            asset.image_clear = image;
+                            asset.imageThumbnail = image;
+                            asset.imageClear = image;
                             [VC matchingPicture:image];
                         }
                     }
@@ -168,9 +168,9 @@
         }
     }
     
-    self.mediaAsset_current = asset;
-    self.VC_currentContainer = VC;
-    self.custom_navigation.label_title.text = [NSString stringWithFormat:@"当前页面ID:%ld", index];
+    self.currentMediaAsset = asset;
+    self.currentContainerVC = VC;
+    self.navigationView.titleLabel.text = [NSString stringWithFormat:@"当前页面ID:%ld", index];
 }
 
 /*
@@ -198,19 +198,18 @@
  */
 
 #pragma mark Accessor
-- (UIImageView *)imageView_medium {
-    if (!_imageView_medium) {
-        _imageView_medium = [[UIImageView alloc] init];
+- (UIImageView *)mediumImageView {
+    if (!_mediumImageView) {
+        _mediumImageView = [[UIImageView alloc] init];
     }
-    return _imageView_medium;
+    return _mediumImageView;
 }
 
-#pragma mark Accessor
-- (WZRemoteImageNavigationView *)custom_navigation {
-    if (!_custom_navigation) {
-        _custom_navigation = [WZRemoteImageNavigationView customAssetBrowseNavigationWithDelegate:(id<WZProtocol_assetBrowseNaviagtion>)self];
+- (WZRemoteImageNavigationView *)navigationView {
+    if (!_navigationView) {
+        _navigationView = [WZRemoteImageNavigationView customAssetBrowseNavigationWithDelegate:(id<WZProtocolAssetBrowseNaviagtion>)self];
     }
-    return _custom_navigation;
+    return _navigationView;
 }
 @end
 

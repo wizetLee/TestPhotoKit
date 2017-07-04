@@ -13,7 +13,7 @@
 @interface WZMediaAssetBaseCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) UIButton *button_select;
+@property (nonatomic, strong) UIButton *selectButton;
 @property (nonatomic, strong) void (^selectedBlock)(BOOL selected);
 @property (nonatomic, strong) WZMediaAsset *asset;
 

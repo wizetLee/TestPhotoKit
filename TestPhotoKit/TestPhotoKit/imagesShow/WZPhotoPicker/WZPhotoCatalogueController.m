@@ -12,7 +12,7 @@
 #pragma mark WZPhotoCatalogueController
 @interface WZPhotoCatalogueController()
 
-@property (nonatomic, strong) WZPhotoPickerController *VC_picker;
+@property (nonatomic, strong) WZPhotoPickerController *pickerVC;
 
 @end
 
@@ -29,8 +29,8 @@
 
 - (void)createViews {
     self.imageView.frame = CGRectMake(self.frame.size.width - self.frame.size.height + 10, 10, self.frame.size.height - 20, self.frame.size.height - 20);
-    _label_title = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, self.frame.size.width - self.frame.size.height, self.frame.size.height)];
-    [self.contentView addSubview:_label_title];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, self.frame.size.width - self.frame.size.height, self.frame.size.height)];
+    [self.contentView addSubview:_titleLabel];
     self.backgroundColor = [UIColor lightGrayColor];
     
     _button = [[UIButton alloc] initWithFrame:self.bounds];
@@ -51,7 +51,7 @@
 - (void)setMediaAssetCollection:(WZMediaAssetCollection *)mediaAssetCollection {
     if ([mediaAssetCollection isKindOfClass:[WZMediaAssetCollection class]]) {
         _mediaAssetCollection = mediaAssetCollection;
-        self.label_title.text = mediaAssetCollection.string_title;
+        self.titleLabel.text = mediaAssetCollection.string_title;
         [_mediaAssetCollection coverHandler:^(UIImage *image) {
             self.imageView.image = image;
         }];
@@ -68,7 +68,7 @@
 , UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *collection;
-@property (nonatomic, strong) NSArray <WZMediaAssetCollection *>* array_mediaAssetCollection;
+@property (nonatomic, strong) NSArray <WZMediaAssetCollection *>* mediaAssetArrayCollection;
 
 @end
 
@@ -77,7 +77,7 @@
 #pragma mark initialize
 + (void)showPickerWithPresentedController:(UIViewController <WZProtocol_mediaAsset>*)presentedController {
     WZPhotoCatalogueController *VC = [[WZPhotoCatalogueController alloc] init];
-    VC.VC_picker.delegate = (id<WZProtocol_mediaAsset>)presentedController;
+    VC.pickerVC.delegate = (id<WZProtocol_mediaAsset>)presentedController;
     UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:VC];
     [presentedController presentViewController:navigationVC animated:true completion:^{}];
 }
@@ -85,9 +85,9 @@
 #pragma mark Lifecycle
 - (instancetype) init {
     if (self = [super init]) {
-        _VC_picker  = [[WZPhotoPickerController alloc] init];
-        _VC_picker.restrictNumber = 9;//选图限制
-        _array_mediaAssetCollection = [NSArray array];
+        _pickerVC  = [[WZPhotoPickerController alloc] init];
+        _pickerVC.restrictNumber = 9;//选图限制
+        _mediaAssetArrayCollection = [NSArray array];
     }
     return self;
 }
@@ -131,7 +131,7 @@
         if (ownAuthorization) {
             //action
             dispatch_async(dispatch_get_main_queue(), ^{
-                _array_mediaAssetCollection = [WZMediaFetcher fetchAssetCollection];
+                _mediaAssetArrayCollection = [WZMediaFetcher fetchAssetCollection];
                 [_collection reloadData];
             });
         } else {
@@ -156,22 +156,22 @@
 
 #pragma mark UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _array_mediaAssetCollection.count;
+    return _mediaAssetArrayCollection.count;
 }
 
 - (__kindof WZPhotoCatalogueCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     __block WZPhotoCatalogueCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([WZPhotoCatalogueCell class]) forIndexPath:indexPath];
     @try {
-        if ([_array_mediaAssetCollection[indexPath.row] isKindOfClass:[WZMediaAssetCollection class]]) {
+        if ([_mediaAssetArrayCollection[indexPath.row] isKindOfClass:[WZMediaAssetCollection class]]) {
             
-            cell.mediaAssetCollection = _array_mediaAssetCollection[indexPath.row];
+            cell.mediaAssetCollection = _mediaAssetArrayCollection[indexPath.row];
             
             __weak typeof(self) weakSelf = self;
             cell.clickedBlock = ^(){
                 //点击目录 进入章节
-                weakSelf.VC_picker.array_mediaAsset = weakSelf.array_mediaAssetCollection[indexPath.row].array_mediaAsset;
+                weakSelf.pickerVC.mediaAssetArray = weakSelf.mediaAssetArrayCollection[indexPath.row].mediaAssetArray;
                 if (weakSelf.navigationController) {
-                    [weakSelf.navigationController pushViewController:weakSelf.VC_picker animated:true];
+                    [weakSelf.navigationController pushViewController:weakSelf.pickerVC animated:true];
                 }
             };
         }

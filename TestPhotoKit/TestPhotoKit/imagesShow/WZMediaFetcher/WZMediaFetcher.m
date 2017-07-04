@@ -10,14 +10,14 @@
 
 
 @implementation WZMediaAsset
-
+#pragma mark - WZMediaAsset
 -(void)setAsset:(PHAsset *)asset {
     _asset = [asset isKindOfClass:[PHAsset class]]?asset:nil;
 }
 
 - (void)fetchThumbnailImageSynchronous:(BOOL)synchronous handler:(void (^)(UIImage *image))handler {
     [WZMediaFetcher fetchThumbnailWith:_asset  synchronous:synchronous handler:^(UIImage *thumbnail) {
-        _image_thumbnail = thumbnail;
+        _imageThumbnail = thumbnail;
         if (handler) {handler(thumbnail);};
     }];
 }
@@ -30,7 +30,7 @@
 
 @end
 
-#pragma mark WZMediaAssetCollection
+#pragma mark - WZMediaAssetCollection
 @implementation WZMediaAssetCollection
 
 - (void)customCoverWithMediaAsset:(WZMediaAsset *)mediaAsset withCoverHandler:(void(^)(UIImage *image))handler {
@@ -48,18 +48,18 @@
     [self customCoverWithMediaAsset:self.coverAssset withCoverHandler:handler];
 }
 
-#pragma mark Accessor
-- (NSArray <WZMediaAsset *>*)array_mediaAsset {
-    if (!_array_mediaAsset) {
-        _array_mediaAsset = [NSArray array];
+#pragma mark - Accessor
+- (NSArray <WZMediaAsset *>*)mediaAssetArray {
+    if (!_mediaAssetArray) {
+        _mediaAssetArray = [NSArray array];
     }
-    return _array_mediaAsset;
+    return _mediaAssetArray;
 }
 
 - (WZMediaAsset *)coverAssset {
     if (!_coverAssset) {
-        if (self.array_mediaAsset.count > 0) {
-            _coverAssset = self.array_mediaAsset[0];
+        if (self.mediaAssetArray.count > 0) {
+            _coverAssset = self.mediaAssetArray[0];
         }
     }
     return _coverAssset;
@@ -67,11 +67,10 @@
 
 @end
 
-#pragma mark WZMediaPicker
+#pragma mark - WZMediaPicker
 @implementation WZMediaFetcher
 
-#pragma mark Fetch Picture
-
+#pragma mark - Fetch Picture
 + (NSMutableArray <WZMediaAssetCollection *> *)fetchAssetCollection {
     //智能相册
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
@@ -89,7 +88,7 @@
                                          subtype:PHAssetCollectionSubtypeAlbumRegular
                                          options:fetchOptions];
     
-    NSMutableArray <WZMediaAssetCollection *>* mArray_mediaAssetCollection = [NSMutableArray array];
+    NSMutableArray <WZMediaAssetCollection *>* mmediaAssetArrayCollection = [NSMutableArray array];
     
     for (PHAssetCollection *assetCollection in result_smartAlbums) {
         PHFetchResult<PHAsset *> *fetchResoult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:[[self class] configImageOptions]];
@@ -100,19 +99,19 @@
             WZMediaAssetCollection *mediaAssetCollection = [[WZMediaAssetCollection alloc] init];
             mediaAssetCollection.assetCollection = assetCollection;
             mediaAssetCollection.string_title = assetCollection.localizedTitle;
-            [mArray_mediaAssetCollection addObject:mediaAssetCollection];
+            [mmediaAssetArrayCollection addObject:mediaAssetCollection];
             
-            NSMutableArray <WZMediaAsset *>*mArray_mediaAsset = [NSMutableArray array];
+            NSMutableArray <WZMediaAsset *>*mmediaAssetArray = [NSMutableArray array];
             for (PHAsset *asset in fetchResoult) {
                 WZMediaAsset *object = [[WZMediaAsset alloc] init];
                 object.asset = asset;
-                [mArray_mediaAsset addObject:object];
+                [mmediaAssetArray addObject:object];
             }
             
-            mediaAssetCollection.array_mediaAsset = [NSArray arrayWithArray:mArray_mediaAsset];
+            mediaAssetCollection.mediaAssetArray = [NSArray arrayWithArray:mmediaAssetArray];
         }
     }
-    return mArray_mediaAssetCollection;
+    return mmediaAssetArrayCollection;
 }
 
 + (int32_t)fetchThumbnailWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler {
@@ -177,6 +176,7 @@
     return imageRequestID;
 }
 
+//过滤出image类型的资源
 + (PHFetchOptions *)configImageOptions {
     PHFetchOptions *fetchResoultOption = [[PHFetchOptions alloc] init];
     fetchResoultOption.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];
@@ -313,9 +313,9 @@
 //    return newImage ;
 //}
 
-#pragma mark Fetch Video
+#pragma mark - Fetch Video
 
 
 
-#pragma mark Fetch Audio
+#pragma mark - Fetch Audio
 @end

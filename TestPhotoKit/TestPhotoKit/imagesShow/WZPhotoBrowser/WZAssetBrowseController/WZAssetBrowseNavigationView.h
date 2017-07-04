@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol WZProtocol_assetBrowseNaviagtion <NSObject>
+@protocol WZProtocolAssetBrowseNaviagtion <NSObject>
 
 - (void)backAction;
 - (void)selectedAction;
@@ -17,11 +17,11 @@
 
 @interface WZAssetBrowseNavigationView : UIView
 
-@property (nonatomic, weak) id<WZProtocol_assetBrowseNaviagtion> delegate;
-@property (nonatomic, strong) UIButton *button_back;
-@property (nonatomic, strong) UIButton *button_selected;
-@property (nonatomic, strong) UILabel *label_title;
+@property (nonatomic, weak) id<WZProtocolAssetBrowseNaviagtion> delegate;
+@property (nonatomic, strong) UIButton *backButton;
+@property (nonatomic, strong) UIButton *selectedButton;
+@property (nonatomic, strong) UILabel *titleLabel;
 
-+ (instancetype)customAssetBrowseNavigationWithDelegate:(id<WZProtocol_assetBrowseNaviagtion>)delegate;
++ (instancetype)customAssetBrowseNavigationWithDelegate:(id<WZProtocolAssetBrowseNaviagtion>)delegate;
 
 @end

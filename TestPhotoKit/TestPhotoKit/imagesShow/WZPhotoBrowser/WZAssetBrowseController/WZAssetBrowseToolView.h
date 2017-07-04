@@ -20,10 +20,10 @@
 @property (nonatomic, weak) id<WZProtocol_assetBrowseTool> delegate;
 @property (nonatomic, strong) void (^fetchClearInfo)(NSString *info);
 @property (nonatomic, strong) void (^restrictNumber)(NSUInteger restrictNumber);
-@property (nonatomic, strong) UIButton *button_selectedClear;
-@property (nonatomic, strong) UILabel *label_clearInfo;
-@property (nonatomic, strong) UIButton *button_complete;
-@property (nonatomic, strong) UILabel *label_count;
+@property (nonatomic, strong) UIButton *selectedButtonClear;
+@property (nonatomic, strong) UILabel *clearInfoLabel;
+@property (nonatomic, strong) UIButton *completeButton;
+@property (nonatomic, strong) UILabel *countLabel;
 
 + (instancetype)customAssetBrowseToolWithDelegate:(id<WZProtocol_assetBrowseTool>)delegate;
 

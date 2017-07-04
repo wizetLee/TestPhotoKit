@@ -12,7 +12,7 @@
 
 @interface WZRemoteImgaeProgressView : UIView
 
-@property (nonatomic, strong) WZRoundRenderLayer *custom_downloadProgress;
+@property (nonatomic, strong) WZRoundRenderLayer *downloadProgressLayer;
 
 + (instancetype)customProgress;
 
@@ -27,18 +27,18 @@
 
 
 @class WZImageContainerController;
-@protocol WZProtocol_ImageContainer <NSObject>
+@protocol WZProtocolImageContainer <NSObject>
 
 @end
 
 @interface WZImageContainerController : UIViewController
 
-@property (nonatomic, weak) UIViewController <WZProtocol_ImageScrollView>*VC_main;
-@property (nonatomic, weak) id<WZProtocol_ImageContainer> delegate;
-@property (nonatomic, assign) NSInteger integer_index;
+@property (nonatomic, weak) UIViewController <WZProtocolImageScrollView>*mainVC;
+@property (nonatomic, weak) id<WZProtocolImageContainer> delegate;
+@property (nonatomic, assign) NSInteger index;
 
 //进度显示(for remote)
-@property (nonatomic, strong) WZRemoteImgaeProgressView *custom_progress;
+@property (nonatomic, strong) WZRemoteImgaeProgressView *progress;
 
 - (void)matchingPicture:(UIImage *)image;
 - (void)focusingWithGesture:(UIGestureRecognizer *)gesture;

@@ -7,11 +7,11 @@
 @implementation WZToast
 
 + (void)toastWithContent:(NSString *)content {
-    [WZToast toastWithContent:content position:WZToastPositionType_Middle];
+    [WZToast toastWithContent:content position:WZToastPositionTypeMiddle];
 }
 
 + (void)toastWithContent:(NSString *)content duration:(NSTimeInterval)duration {
-    [WZToast toastWithContent:content position:WZToastPositionType_Middle duration:duration];
+    [WZToast toastWithContent:content position:WZToastPositionTypeMiddle duration:duration];
 }
 
 + (void)toastWithContent:(NSString *)content position:(WZToastPositionType)position {
@@ -92,13 +92,13 @@
         //Y坐标的计算
         switch (position) {
                 break;
-            case WZToastPositionType_Top:
+            case WZToastPositionTypeTop:
             {
                 toastY = 100.0;
             }
                 break;
                 
-            case WZToastPositionType_Bottom:
+            case WZToastPositionTypeBottom:
             {
                 toastY = [UIScreen mainScreen].bounds.size.height - toastH - 100.0;
             }

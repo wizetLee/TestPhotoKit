@@ -16,7 +16,7 @@
  */
 @interface WZPhotoCatalogueCell : WZMediaAssetBaseCell
 
-@property (nonatomic, strong) UILabel *label_title;
+@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIButton *button;
 @property (nonatomic, strong) WZMediaAssetCollection *mediaAssetCollection;
 @property (nonatomic, strong) void (^clickedBlock)();

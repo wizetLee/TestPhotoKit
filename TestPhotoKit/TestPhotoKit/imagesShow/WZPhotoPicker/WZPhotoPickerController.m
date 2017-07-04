@@ -13,7 +13,7 @@
 #import "WZAssetBrowseController.h"
 #import "WZRemoteImageBrowseController.h"
 
-#pragma mark WZPhotoPickerController
+#pragma mark - WZPhotoPickerController
 @interface WZPhotoPickerController ()
 <UICollectionViewDelegate
 , UICollectionViewDataSource
@@ -25,7 +25,7 @@
 
 @implementation WZPhotoPickerController
 
-#pragma mark initialize
+#pragma mark - initialize
 
 #pragma mark - ViewController Lifecycle
 - (void)viewDidLoad {
@@ -33,8 +33,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = NSStringFromClass([self class]);
     self.automaticallyAdjustsScrollViewInsets = false;
-    if (!_array_mediaAsset) {
-        _array_mediaAsset = [NSArray array];
+    if (!_mediaAssetArray) {
+        _mediaAssetArray = [NSArray array];
     }
     
     [self createViews];
@@ -48,7 +48,7 @@
     NSLog(@"%s", __func__);
 }
 
-#pragma mark create views
+#pragma mark - create views
 - (void)createViews {
     [self.view addSubview:self.collection];
     UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithTitle:@"返回目录" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
@@ -67,7 +67,7 @@
         NSLock *lock = [[NSLock alloc] init];
         [lock tryLock];
         NSMutableArray *mArray_images = [NSMutableArray array];
-        for (WZMediaAsset *mediaAsset in self.array_mediaAsset) {
+        for (WZMediaAsset *mediaAsset in self.mediaAssetArray) {
             if (mediaAsset.selected) {
                 if (mediaAsset.origion) {
                     [mediaAsset fetchOrigionImageSynchronous:true handler:^(UIImage *image) {
@@ -93,20 +93,20 @@
 - (void) dismiss{
     [self dismissViewControllerAnimated:true completion:^{
         if ([_delegate respondsToSelector:@selector(fetchAssets:)]) {
-            NSMutableArray *mArray_mediaAsset_callback = [NSMutableArray array];
-            for (WZMediaAsset *mediaAsset in self.array_mediaAsset) {
+            NSMutableArray *mmediaAssetArray_callback = [NSMutableArray array];
+            for (WZMediaAsset *mediaAsset in self.mediaAssetArray) {
                 if (mediaAsset.selected) {
-                    [mArray_mediaAsset_callback addObject:mediaAsset];
+                    [mmediaAssetArray_callback addObject:mediaAsset];
                 }
             }
-            [_delegate fetchAssets:[NSArray arrayWithArray:mArray_mediaAsset_callback]];
+            [_delegate fetchAssets:[NSArray arrayWithArray:mmediaAssetArray_callback]];
         }
     }];
 }
 
 -(void)back {
     //复原选择数据
-    for (WZMediaAsset *asset in self.array_mediaAsset) {
+    for (WZMediaAsset *asset in self.mediaAssetArray) {
         asset.selected = false;
         asset.origion = false;
     }
@@ -117,16 +117,16 @@
     }
 }
 
-#pragma mark UICollectionViewDataSource
+#pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _array_mediaAsset.count;
+    return _mediaAssetArray.count;
 }
 
 - (__kindof WZMediaAssetBaseCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     WZMediaAssetBaseCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([WZMediaAssetBaseCell class]) forIndexPath:indexPath];
     
     @try {
-        cell.asset = _array_mediaAsset[indexPath.row];
+        cell.asset = _mediaAssetArray[indexPath.row];
         __weak typeof(cell) weakCell = cell;
         __weak typeof(self) weakSelf = self;
          cell.selectedBlock = ^(BOOL selected) {
@@ -134,7 +134,7 @@
                 
             } else {
                 weakCell.asset.selected = !weakCell.asset.selected;
-                weakCell.button_select.selected = weakCell.asset.selected;
+                weakCell.selectButton.selected = weakCell.asset.selected;
             }
         };   
     } @catch (NSException *exception) {
@@ -149,7 +149,7 @@
     }
     
     NSUInteger restrictNumber = 0;
-    for (WZMediaAsset *asset in self.array_mediaAsset) {
+    for (WZMediaAsset *asset in self.mediaAssetArray) {
         if (asset.selected == true) {
             restrictNumber = restrictNumber + 1;
         }
@@ -162,22 +162,22 @@
 }
 
 
-#pragma mark UICollectionViewDelegate
+#pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 //    WZMediaAssetBaseCell *cell = (WZMediaAssetBaseCell *)[collectionView cellForItemAtIndexPath:indexPath];
 
     //浏览大图
-    if (self.array_mediaAsset.count) {
+    if (self.mediaAssetArray.count) {
         WZAssetBrowseController *VC = [[WZAssetBrowseController alloc] init];
-        VC.delegate_imagesBrowse = (id<WZProtocol_imageBrowse>)self;
-        VC.array_mediaAsset = self.array_mediaAsset;
+        VC.imagesBrowseDelegate = (id<WZProtocolImageBrowse>)self;
+        VC.mediaAssetArray = self.mediaAssetArray;
         VC.restrictNumber = self.restrictNumber;
         [VC showInIndex:indexPath.row withAnimated:true];
         [self presentViewController:VC animated:true completion:^{}];
     }
 }
 
-#pragma mark WZProtocol_imageBrowse
+#pragma mark - WZProtocolImageBrowse
 - (void)backAction {
     [self.collection reloadData];
 }
@@ -186,15 +186,15 @@
     [self finish];
 }
 
-#pragma mark WZProtocol_mediaAsset
+#pragma mark - WZProtocol_mediaAsset
 - (void)fetchAssets:(NSArray <WZMediaAsset *> *)assets {
     if (assets) {
     }
 }
 
-#pragma mark Accessor
-- (void)setArray_mediaAsset:(NSArray<WZMediaAsset *> *)array_mediaAsset {
-    _array_mediaAsset = [array_mediaAsset isKindOfClass:[NSArray class]]?array_mediaAsset:nil;
+#pragma mark - Accessor
+- (void)setmediaAssetArray:(NSArray<WZMediaAsset *> *)mediaAssetArray {
+    _mediaAssetArray = [mediaAssetArray isKindOfClass:[NSArray class]]?mediaAssetArray:nil;
     if (_collection) {
         [_collection reloadData];
     }

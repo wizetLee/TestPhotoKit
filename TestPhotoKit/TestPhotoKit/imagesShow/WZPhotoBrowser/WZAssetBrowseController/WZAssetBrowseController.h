@@ -12,7 +12,7 @@
 @interface WZAssetBrowseController : WZImageBrowseController
 
 @property (nonatomic, assign) PHImageRequestID imageRequestID;
-@property (nonatomic, assign) PHImageRequestID imageRequestID_data;
+@property (nonatomic, assign) PHImageRequestID imageDataRequestID;
 
 - (BOOL)overloadJudgement;
 - (void)caculateSelected;

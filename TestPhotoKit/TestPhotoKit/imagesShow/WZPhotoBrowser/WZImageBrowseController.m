@@ -8,19 +8,18 @@
 
 #import "WZImageBrowseController.h"
 
-#pragma mark WZImageBrowseController
-@interface WZImageBrowseController ()<
-UIPageViewControllerDataSource,
-UIPageViewControllerDelegate,
-UIViewControllerTransitioningDelegate,
-WZProtocol_ImageScrollView
->
+#pragma mark - WZImageBrowseController
+@interface WZImageBrowseController ()<UIPageViewControllerDataSource,
+                                      UIPageViewControllerDelegate,
+                                      UIViewControllerTransitioningDelegate,
+                                      WZProtocolImageScrollView
+                                     >
 
 @end
 
 @implementation WZImageBrowseController
 
-#pragma Initialize
+#pragma mark - Initialize
 - (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary<NSString *,id> *)options {
     NSMutableDictionary *configOptions = [NSMutableDictionary dictionaryWithDictionary:options?:@{}];
     //页面间隔设置
@@ -37,7 +36,7 @@ WZProtocol_ImageScrollView
          */
         //自定义跳转代理
         //        self.transitioningDelegate = self;
-        _integer_currentIndex = 0;
+        _currentIndex = 0;
         //        _numberOfIndexs = 9;
         ////        _datas
         //        NSMutableArray *array = [NSMutableArray array];
@@ -51,7 +50,7 @@ WZProtocol_ImageScrollView
     return self;
 }
 
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -64,48 +63,48 @@ WZProtocol_ImageScrollView
 - (void)createViews {
 }
 
-#pragma mark WZProtocol_imageBrowseNavigationView
+#pragma mark - WZProtocolImageBrowseNavigationView
 - (void)leftButtunAction {
     [self dismissViewControllerAnimated:true completion:^{}];
 }
 - (void)rightButtunAction {
 }
 
-#pragma mark Match VC use index
+#pragma mark - Match VC use index
 - (WZImageContainerController *)matchControllerIndexWithIndex:(NSInteger)index {
     
     if (index < 0
-        || index > _interger_numberOfIndexs) {
+        || index > _numberOfIndexs) {
         return nil;
     }
     
-    WZImageContainerController *VC = self.array_reuseable_imageContainers[index % self.array_reuseable_imageContainers.count];
-    VC.integer_index = index;
+    WZImageContainerController *VC = self.imageContainersReuseableArray[index % self.imageContainersReuseableArray.count];
+    VC.index = index;
     [self matchThumnailImageWith:VC];
     return VC;
 }
 
-#pragma mark Show VC in index
+#pragma mark - Show VC in index
 - (void)showInIndex:(NSInteger)index withAnimated:(BOOL)animated {
     
     if (index <= 0) {index = 0;}
-    if (index > _interger_numberOfIndexs) {index = _interger_numberOfIndexs;}
-    _integer_currentIndex  = index;
+    if (index > _numberOfIndexs) {index = _numberOfIndexs;}
+    _currentIndex  = index;
     
-    WZImageContainerController *VC = [self matchControllerIndexWithIndex:_integer_currentIndex];
+    WZImageContainerController *VC = [self matchControllerIndexWithIndex:_currentIndex];
     [self matchClearImageWith:VC];
     [self setViewControllers:@[VC] direction:UIPageViewControllerNavigationDirectionForward animated:animated completion:^(BOOL finished) {}];
-    self.VC_currentContainer = VC;
+    self.currentContainerVC = VC;
 }
 
 
-#pragma mark Match image
+#pragma mark - Match image
 - (void)matchThumnailImageWith:(WZImageContainerController *)VC {
     if (!VC) {
         return;
     }
-    NSUInteger index = VC.integer_index;
-    if (index >= _array_mediaAsset.count) {
+    NSUInteger index = VC.index;
+    if (index >= _mediaAssetArray.count) {
         return;
     }
 }
@@ -114,20 +113,20 @@ WZProtocol_ImageScrollView
     if (!VC) {
         return;
     }
-    NSUInteger index = VC.integer_index;
-    if (index >= _array_mediaAsset.count) {
+    NSUInteger index = VC.index;
+    if (index >= _mediaAssetArray.count) {
         return;
     }
 }
 
-#pragma mark WZProtocol_ImageScrollView
+#pragma mark - WZProtocolImageScrollView
 - (void)singleTap:(UIGestureRecognizer *)gesture {
     //单击
 }
 
 - (void)doubleTap:(UIGestureRecognizer *)gesture  {
     //变焦动画
-    [self.VC_currentContainer focusingWithGesture:gesture];
+    [self.currentContainerVC focusingWithGesture:gesture];
 }
 
 - (void)longPress:(UIGestureRecognizer *)gesture {
@@ -135,26 +134,26 @@ WZProtocol_ImageScrollView
     
 }
 
-#pragma mark WZProtocol_ImageContainer
+#pragma mark - WZProtocolImageContainer
 
-#pragma mark UIPageViewControllerDelegate
+#pragma mark - UIPageViewControllerDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     WZImageContainerController *VC = pageViewController.viewControllers.firstObject;
-    if (self.VC_currentContainer != VC) {
+    if (self.currentContainerVC != VC) {
         [self matchClearImageWith:VC];
     }
 }
 
-#pragma mark UIPageViewControllerDataSource
+#pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(WZImageContainerController *)viewController {
-    return [self matchControllerIndexWithIndex:viewController.integer_index - 1];
+    return [self matchControllerIndexWithIndex:viewController.index - 1];
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(WZImageContainerController *)viewController {
-    return [self matchControllerIndexWithIndex:viewController.integer_index + 1];
+    return [self matchControllerIndexWithIndex:viewController.index + 1];
 }
 
-#pragma mark UIViewControllerTransitioningDelegate
+#pragma mark - UIViewControllerTransitioningDelegate
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     return nil;
 }
@@ -163,29 +162,29 @@ WZProtocol_ImageScrollView
     return nil;
 }
 
-#pragma mark Accessor
-- (NSArray <WZImageContainerController *>*)array_reuseable_imageContainers {
-    if (!_array_reuseable_imageContainers) {
+#pragma mark - Accessor
+- (NSArray <WZImageContainerController *>*)imageContainersReuseableArray {
+    if (!_imageContainersReuseableArray) {
         NSMutableArray *tmpMArr = [NSMutableArray array];
-        NSUInteger reuseCount = 5;
+        NSUInteger reuseCount = 5;//重用控制器数目
         for (NSUInteger i = 0; i < reuseCount; i++) {
             WZImageContainerController *VC = [[WZImageContainerController alloc] init];
-            VC.integer_index = i;
-            VC.delegate = (id<WZProtocol_ImageContainer>)self;
-            VC.VC_main = self;
+            VC.index = i;
+            VC.delegate = (id<WZProtocolImageContainer>)self;
+            VC.mainVC = self;
             [tmpMArr addObject:VC];
         }
-        _array_reuseable_imageContainers = [NSArray arrayWithArray:tmpMArr];
+        _imageContainersReuseableArray = [NSArray arrayWithArray:tmpMArr];
     }
-    return _array_reuseable_imageContainers;
+    return _imageContainersReuseableArray;
 }
 
-- (void)setArray_mediaAsset:(NSArray<WZMediaAsset *> *)array_mediaAsset {
-    if ([array_mediaAsset isKindOfClass:[NSArray class]]) {
-        _array_mediaAsset = array_mediaAsset;
-        _interger_numberOfIndexs = _array_mediaAsset.count - 1;
-        if (_interger_numberOfIndexs < 0) {
-            _interger_numberOfIndexs = 0;
+- (void)setMediaAssetArray:(NSArray<WZMediaAsset *> *)mediaAssetArray {
+    if ([mediaAssetArray isKindOfClass:[NSArray class]]) {
+        _mediaAssetArray = mediaAssetArray;
+        _numberOfIndexs = _mediaAssetArray.count - 1;
+        if (_numberOfIndexs < 0) {
+            _numberOfIndexs = 0;
         }
     }
 }

@@ -190,7 +190,7 @@
 
 
 - (IBAction)networkImagesShow:(id)sender {
-    NSArray <NSString *>*array_images = @[
+    NSArray <NSString *>*imageArray = @[
                                           @"http://www.5fen.com/uploads/allimg/131215/98-131215160J50-L.png",
                                           @"http://pic6.nipic.com/20100305/3648835_130246001000_2.jpg",
                                           @"http://www.meijialx.com/UserFiles/5(1463).jpg",
@@ -227,8 +227,8 @@
                                           @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497241035251&di=3035e01f8ad342d086212d29ba6b0efb&imgtype=0&src=http%3A%2F%2Fwww.bz55.com%2Fuploads%2Fallimg%2F150326%2F140-150326103026.jpg",
                                           @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497241035251&di=2ac1d0e9e222e63490f7f1ba21bfcbb2&imgtype=0&src=http%3A%2F%2Fimg17.3lian.com%2Fd%2Ffile%2F201703%2F01%2Fd13c2c900e52fbb9e3703abb1c29da77.jpg",];
     
-    NSArray <NSURL *>*mArray_url = [WZRemoteImageBrowseController fetchUrlArrayAccordingStringArray:array_images];
-    [WZRemoteImageBrowseController showRemoteImagesWithURLArray:mArray_url loactedVC:self];
+    NSArray <NSURL *>*urlMArray = [WZRemoteImageBrowseController fetchUrlArrayAccordingStringArray:imageArray];
+    [WZRemoteImageBrowseController showRemoteImagesWithURLArray:urlMArray loactedVC:self];
 }
 
 #pragma mark WZProtocol_mediaAsset  选图片回调

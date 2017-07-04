@@ -42,11 +42,11 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 @property (nonatomic, strong) PHAsset *asset;
 @property (nonatomic, assign) WZMediaType mediaType;
 
-@property (nonatomic, strong) UIImage *image_clear;
-@property (nonatomic, strong) UIImage *image_thumbnail;
+@property (nonatomic, strong) UIImage *imageClear;
+@property (nonatomic, strong) UIImage *imageThumbnail;
 
-@property (nonatomic, strong) NSURL *url_media;
-@property (nonatomic, strong) NSString *string_clearPath;
+@property (nonatomic, strong) NSURL *urlMedia;
+@property (nonatomic, strong) NSString *stringClearPath;
 
 - (void)fetchThumbnailImageSynchronous:(BOOL)synchronous handler:(void (^)(UIImage *image))handler;
 - (void)fetchOrigionImageSynchronous:(BOOL)synchronous handler:(void (^)(UIImage *image))handler;
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 
 @interface WZMediaAssetCollection : NSObject
 
-@property (nonatomic, strong) NSArray <WZMediaAsset *>* array_mediaAsset;
+@property (nonatomic, strong) NSArray <WZMediaAsset *>* mediaAssetArray;
 @property (nonatomic, strong) PHAssetCollection *assetCollection;
 @property (nonatomic, strong) NSString *string_title;
 @property (nonatomic, strong) WZMediaAsset *coverAssset;//默认是 assetMArray 首个元素
@@ -72,13 +72,51 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 + (NSMutableArray <WZMediaAssetCollection *> *)fetchAssetCollection;
 
 #pragma mark Fetch Picture
+
+/**
+ *  获取目标资源的缩略图 size为WZMediaAsset_thumbnailSize
+ *
+ *  @param mediaAsset  目标资源
+ *  @param synchronous 是否同步获取
+ *  @param handler     返回图片的block
+ *
+ *  @return 资源ID
+ */
 + (int32_t)fetchThumbnailWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler ;
 
+/**
+ *  获取目标资源的原尺寸图
+ *
+ *  @param mediaAsset  目标资源
+ *  @param synchronous 是否同步获取
+ *  @param handler     返回图片的block
+ *
+ *  @return 资源ID
+ */
 + (int32_t)fetchOrigionWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *origion))handler;
 
+/**
+ *  获取目标资源的图 自定义size
+ *
+ *  @param mediaAsset  目标资源
+ *  @param costumSize  自定义size
+ *  @param synchronous 是否同步获取
+ *  @param handler     返回图片的block
+ *
+ *  @return 资源ID
+ */
 + (int32_t)fetchImageWith:(PHAsset *)mediaAsset costumSize:(CGSize)customSize synchronous:(BOOL)synchronous handler:(void(^)(UIImage *origion))handler;
 
-+ (int32_t)fetchImageWith:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData *  imageData, NSString *  dataUTI, UIImageOrientation orientation, NSDictionary *  info))handler;
+/**
+ *  获取目标资源的原尺寸图
+ *
+ *  @param asset       目标资源
+ *  @param synchronous 是否同步获取
+ *  @param handler      data形式 图片方向 图片的详情info
+ *
+ *  @return 资源ID
+ */
++ (int32_t)fetchImageWith:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData *  imageData, NSString * dataUTI, UIImageOrientation orientation, NSDictionary *  info))handler;
 
 #pragma mark Fetch Video
 
