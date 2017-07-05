@@ -24,8 +24,18 @@
 @property (nonatomic, strong) UITapGestureRecognizer *doubleTap;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
 
+/**
+ *  匹配图片接口
+ *
+ *  @param image 需要匹配的图片
+ */
 - (void)matchingPicture:(UIImage *)image;
-- (void)matchZoomWithGesture:(UIGestureRecognizer *)gesture;
 
+/**
+ *  匹配经过缩放的图片接口
+ *
+ *  @param gesture 缩放手势
+ */
+- (void)matchZoomWithGesture:(UIGestureRecognizer *)gesture;
 
 @end

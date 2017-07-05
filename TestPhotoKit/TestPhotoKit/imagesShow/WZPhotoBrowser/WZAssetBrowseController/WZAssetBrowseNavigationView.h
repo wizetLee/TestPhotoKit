@@ -10,8 +10,8 @@
 
 @protocol WZProtocolAssetBrowseNaviagtion <NSObject>
 
-- (void)backAction;
-- (void)selectedAction;
+- (void)backAction;//返回代理事件
+- (void)selectedAction;//选中代理事件
 
 @end
 

@@ -53,7 +53,7 @@
     }
 }
 
-#pragma mark Accessor
+#pragma mark - Accessor
 - (UIButton *)selectButton {
     if (!_selectButton) {
         CGFloat selectedBtnHW = 0;

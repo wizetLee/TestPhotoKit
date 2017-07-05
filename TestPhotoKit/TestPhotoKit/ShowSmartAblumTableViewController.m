@@ -18,7 +18,7 @@
 
 @implementation ShowSmartAblumTableViewController
 
-#pragma mark Initialize
+#pragma mark - Initialize
 
 - (instancetype)initWithAlbumCount:(NSInteger)albumCount {
     if (self =[super initWithStyle:UITableViewStylePlain]) {
@@ -27,7 +27,7 @@
     return self;
 }
 
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,7 +35,7 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CELLID];
 }
 
-#pragma mark - Table view data source
+#pragma mark - - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WZMediaAssetBaseCell.h"
 @class WZMediaAssetCollection;
-@protocol WZProtocol_mediaAsset;
+@protocol WZProtocolMediaAsset;
 
 /**
  *  图片目录
@@ -25,6 +25,6 @@
 
 @interface WZPhotoCatalogueController : UIViewController
 
-+ (void)showPickerWithPresentedController:(UIViewController <WZProtocol_mediaAsset>*)presentedController;
++ (void)showPickerWithPresentedController:(UIViewController <WZProtocolMediaAsset>*)presentedController;
 
 @end

@@ -9,7 +9,7 @@
 #import "WZPhotoCatalogueController.h"
 #import "WZPhotoPickerController.h"
 
-#pragma mark WZPhotoCatalogueController
+#pragma mark - WZPhotoCatalogueController
 @interface WZPhotoCatalogueController()
 
 @property (nonatomic, strong) WZPhotoPickerController *pickerVC;
@@ -51,7 +51,7 @@
 - (void)setMediaAssetCollection:(WZMediaAssetCollection *)mediaAssetCollection {
     if ([mediaAssetCollection isKindOfClass:[WZMediaAssetCollection class]]) {
         _mediaAssetCollection = mediaAssetCollection;
-        self.titleLabel.text = mediaAssetCollection.string_title;
+        self.titleLabel.text = mediaAssetCollection.title;
         [_mediaAssetCollection coverHandler:^(UIImage *image) {
             self.imageView.image = image;
         }];
@@ -60,7 +60,7 @@
 
 @end
 
-#pragma mark WZPhotoCatalogueController
+#pragma mark - WZPhotoCatalogueController
 @interface WZPhotoCatalogueController ()
 
 <UICollectionViewDelegate
@@ -74,15 +74,15 @@
 
 @implementation WZPhotoCatalogueController
 
-#pragma mark initialize
-+ (void)showPickerWithPresentedController:(UIViewController <WZProtocol_mediaAsset>*)presentedController {
+#pragma mark - initialize
++ (void)showPickerWithPresentedController:(UIViewController <WZProtocolMediaAsset>*)presentedController {
     WZPhotoCatalogueController *VC = [[WZPhotoCatalogueController alloc] init];
-    VC.pickerVC.delegate = (id<WZProtocol_mediaAsset>)presentedController;
+    VC.pickerVC.delegate = (id<WZProtocolMediaAsset>)presentedController;
     UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:VC];
     [presentedController presentViewController:navigationVC animated:true completion:^{}];
 }
 
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 - (instancetype) init {
     if (self = [super init]) {
         _pickerVC  = [[WZPhotoPickerController alloc] init];
@@ -111,7 +111,7 @@
     NSLog(@"%s", __func__);
 }
 
-#pragma mark CreateViews
+#pragma mark - CreateViews
 - (void)createViews {
     [self.view addSubview:self.collection];
     
@@ -125,7 +125,7 @@
     [self dismissViewControllerAnimated:true completion:^{}];
 }
 
-#pragma mark fetchAuthorization
+#pragma mark - fetchAuthorization
 - (void)getAuthorization {
     [NSObject requestPhotosLibraryAuthorization:^(BOOL ownAuthorization) {
         if (ownAuthorization) {
@@ -154,7 +154,7 @@
     [self presentViewController:alter animated:true completion:nil];
 }
 
-#pragma mark UICollectionViewDataSource
+#pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _mediaAssetArrayCollection.count;
 }
@@ -181,7 +181,7 @@
     return cell;
 }
 
-#pragma mark Accessor
+#pragma mark - Accessor
 - (UICollectionView *)collection {
     if (!_collection) {
         CGRect rect = self.navigationController?CGRectMake(0.0, 64.0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64.0):self.view.bounds;

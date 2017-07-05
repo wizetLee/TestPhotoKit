@@ -10,7 +10,7 @@
 
 @implementation WZAssetBrowseToolView
 
-+ (instancetype)customAssetBrowseToolWithDelegate:(id<WZProtocol_assetBrowseTool>)delegate {
++ (instancetype)customAssetBrowseToolWithDelegate:(id<WZProtocolAssetBrowseTool>)delegate {
     WZAssetBrowseToolView *tool = [[WZAssetBrowseToolView alloc] init];
     tool.delegate = delegate;
     CGFloat toolH = 49.0;

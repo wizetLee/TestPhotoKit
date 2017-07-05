@@ -12,11 +12,12 @@
 
 @protocol WZProtocolImageBrowse <NSObject>
 
-- (void)backAction;
-- (void)send;
+- (void)backAction;//返回代理事件
+- (void)send;//发送代理事件
 
 @end
 
+//图片浏览容器控制器
 @interface WZImageBrowseController : UIPageViewController
 
 @property (nonatomic, strong) id<WZProtocolImageBrowse> imagesBrowseDelegate;//代理
@@ -29,7 +30,7 @@
 @property (nonatomic, strong) WZMediaAsset *currentMediaAsset;//当前集合
 
 - (void)showInIndex:(NSInteger)index withAnimated:(BOOL)animated;//控制器定位
-- (void)matchThumnailImageWith:(WZImageContainerController *)VC;//缩略图
-- (void)matchClearImageWith:(WZImageContainerController *)VC;//清晰图
+- (void)matchThumnailImageWith:(WZImageContainerController *)VC;//控制器缩略图匹配
+- (void)matchClearImageWith:(WZImageContainerController *)VC;//控制器上清晰图匹配
 
 @end

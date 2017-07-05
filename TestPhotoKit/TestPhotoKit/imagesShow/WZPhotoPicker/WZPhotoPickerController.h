@@ -14,7 +14,7 @@
  */
 @interface WZPhotoPickerController : UIViewController
 
-@property (nonatomic, weak) id<WZProtocol_mediaAsset> delegate;
+@property (nonatomic, weak) id<WZProtocolMediaAsset> delegate;
 @property (nonatomic, strong) NSArray <WZMediaAsset *>* mediaAssetArray;
 @property (nonatomic, assign) NSUInteger restrictNumber;
 @end

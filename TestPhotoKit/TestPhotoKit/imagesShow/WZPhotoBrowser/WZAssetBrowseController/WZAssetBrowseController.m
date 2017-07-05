@@ -12,14 +12,14 @@
 
 @interface WZAssetBrowseController ()
 
-@property (nonatomic, strong) WZAssetBrowseNavigationView *navigationView;
-@property (nonatomic, strong) WZAssetBrowseToolView *toolView;
+@property (nonatomic, strong) WZAssetBrowseNavigationView *navigationView;//顶部导航条
+@property (nonatomic, strong) WZAssetBrowseToolView *toolView;//底部工具条
 
 @end
 
 @implementation WZAssetBrowseController
 
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -28,7 +28,7 @@
     NSLog(@"%s", __func__);
 }
 
-#pragma mark CreateViews
+#pragma mark - CreateViews
 - (void)createViews {
     [self.view addSubview:self.navigationView];
     [self.view addSubview:self.toolView];
@@ -36,7 +36,7 @@
     self.view.backgroundColor = [UIColor blackColor];
 }
 
-#pragma mark WZProtocolAssetBrowseNaviagtion
+#pragma mark - WZProtocolAssetBrowseNaviagtion
 - (void)backAction {
     if ([self.imagesBrowseDelegate respondsToSelector:@selector(backAction)]) {
         [self.imagesBrowseDelegate backAction];
@@ -54,7 +54,7 @@
     [self caculateSelected];
 }
 
-#pragma mark WZProtocol_assetBrowseTool
+#pragma mark - WZProtocolAssetBrowseTool
 - (void)selectedOrigionAction {
     self.currentMediaAsset.origion = !self.currentMediaAsset.origion;
     self.toolView.selectedButtonClear.selected = self.currentMediaAsset.origion;
@@ -69,7 +69,7 @@
     }];
 }
 
-#pragma mark Match image
+#pragma mark - Match image
 - (void)matchThumnailImageWith:(WZImageContainerController *)VC {
     [super matchThumnailImageWith:VC];
     
@@ -95,12 +95,12 @@
     if (index < self.mediaAssetArray.count ) {
         asset = self.mediaAssetArray[index];
         
-        if (asset.stringClearPath || asset.imageClear) {
+        if (asset.clearPath || asset.imageClear) {
             if (asset.imageClear) {
                 [VC matchingPicture:asset.imageClear];
                 [self caculateImageDataWithImage:asset.imageClear];
             } else {
-                UIImage *image = [UIImage imageWithContentsOfFile:asset.stringClearPath];
+                UIImage *image = [UIImage imageWithContentsOfFile:asset.clearPath];
                 [VC matchingPicture:image];
                 [self caculateImageDataWithImage:image];
             }
@@ -141,7 +141,7 @@
     }
 }
 
-#pragma mark private method
+#pragma mark - private method
 - (void)caculateSelected {
     NSUInteger restrictNumber = 0;
     for (WZMediaAsset *asset in self.mediaAssetArray) {
@@ -191,7 +191,7 @@
     }
 }
 
-#pragma mark Accessor
+#pragma mark - Accessor
 - (WZAssetBrowseNavigationView *)navigationView {
     if (!_navigationView) {
         _navigationView = [WZAssetBrowseNavigationView customAssetBrowseNavigationWithDelegate:(id<WZProtocolAssetBrowseNaviagtion>)self];
@@ -201,7 +201,7 @@
 
 - (WZAssetBrowseToolView *)toolView {
     if (!_toolView) {
-        _toolView = [WZAssetBrowseToolView customAssetBrowseToolWithDelegate:(id<WZProtocol_assetBrowseTool>)self];
+        _toolView = [WZAssetBrowseToolView customAssetBrowseToolWithDelegate:(id<WZProtocolAssetBrowseTool>)self];
     }
     return _toolView;
 }

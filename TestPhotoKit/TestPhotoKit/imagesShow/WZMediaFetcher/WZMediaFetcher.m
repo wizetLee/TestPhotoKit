@@ -98,7 +98,7 @@
             
             WZMediaAssetCollection *mediaAssetCollection = [[WZMediaAssetCollection alloc] init];
             mediaAssetCollection.assetCollection = assetCollection;
-            mediaAssetCollection.string_title = assetCollection.localizedTitle;
+            mediaAssetCollection.title = assetCollection.localizedTitle;
             [mmediaAssetArrayCollection addObject:mediaAssetCollection];
             
             NSMutableArray <WZMediaAsset *>*mmediaAssetArray = [NSMutableArray array];
@@ -262,7 +262,7 @@
 //        CGSize targetSize = [self size:origion.size adjustLargestUnit:150];
 //        UIImage *thumbnail = [self image:origion byScalingToSize:targetSize];
 ////
-//        mediaAsset.mediaType = WZMediaType_photo;
+//        mediaAsset.mediaType = WZMediaTypePhoto;
 //        mediaAsset.thumbnail = thumbnail;
 //        mediaAsset.origion = origion;
 //        if (handler) {

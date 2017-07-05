@@ -15,7 +15,7 @@
 #import "WZMediaFetcher.h"
 
 
-@interface ViewController ()<WZProtocol_mediaAsset>
+@interface ViewController ()<WZProtocolMediaAsset>
 
 @end
 
@@ -231,7 +231,7 @@
     [WZRemoteImageBrowseController showRemoteImagesWithURLArray:urlMArray loactedVC:self];
 }
 
-#pragma mark WZProtocol_mediaAsset  选图片回调
+#pragma mark - WZProtocolMediaAsset  选图片回调
 
 - (void)fetchAssets:(NSArray <WZMediaAsset *> *)assets {
     NSLog(@"%@",assets);

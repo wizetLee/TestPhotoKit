@@ -31,7 +31,7 @@
     return urlMArray;
 }
 
-#pragma mark Initialize
+#pragma mark - Initialize
 + (void)showRemoteImagesWithURLArray:(NSArray <NSURL *>*)urlArray loactedVC:(UIViewController *)locatedVC {
     if (!urlArray
         || !locatedVC
@@ -47,12 +47,12 @@
     
     for (int i = 0; i < urlArray.count; i++) {
         WZMediaAsset *asset = [[WZMediaAsset alloc] init];
-        asset.urlMedia = urlArray[i];
+        asset.remoteMediaURL = urlArray[i];
         asset.imageThumbnail = [UIImage imageWithColor:[[UIColor blackColor] colorWithAlphaComponent:0.5]];
         [imagesMArray addObject:asset];
         
         //使用了url缓存
-        NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:asset.urlMedia];
+        NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:asset.remoteMediaURL];
         if (key) {
             UIImage *cacheImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:key];
             if (cacheImage) {
@@ -74,7 +74,7 @@
     }
 }
 
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
@@ -85,7 +85,7 @@
     [self caculateSelected];
 }
 
-#pragma mark Match image
+#pragma mark - Match image
 - (void)matchThumnailImageWith:(WZImageContainerController *)VC {
     if (!VC) {
         return;
@@ -117,10 +117,10 @@
     WZMediaAsset *asset = nil;
     if (index < self.mediaAssetArray.count ) {
         asset = self.mediaAssetArray[index];
-        NSAssert(asset.urlMedia, @"却少媒体URL！");
+        NSAssert(asset.remoteMediaURL, @"却少媒体URL！");
         
-        if (asset.stringClearPath) {
-            UIImage *image = [UIImage imageWithContentsOfFile:asset.stringClearPath];
+        if (asset.clearPath) {
+            UIImage *image = [UIImage imageWithContentsOfFile:asset.clearPath];
             if (image) {
                 [VC matchingPicture:image];
                 return;
@@ -128,15 +128,15 @@
         }
         if (asset.imageClear) {
             [VC matchingPicture:asset.imageClear];
-        } else if (asset.urlMedia) {
+        } else if (asset.remoteMediaURL) {
             
             [self.mediumImageView sd_cancelCurrentImageLoad];
             //复位状态
             [VC.progress setProgressRate:0];
              VC.progress.hidden = false;
-            if ([asset.urlMedia isKindOfClass:[NSURL class]]) {
+            if ([asset.remoteMediaURL isKindOfClass:[NSURL class]]) {
                 
-                [self.mediumImageView sd_setImageWithPreviousCachedImageWithURL:asset.urlMedia andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                [self.mediumImageView sd_setImageWithPreviousCachedImageWithURL:asset.remoteMediaURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                     /*
                      这个因为NSHTTPURLResponse中
                      Accept-Encoding为gzip造成的
@@ -197,7 +197,7 @@
  大部分HTTP1.0的客户端无法处理q值
  */
 
-#pragma mark Accessor
+#pragma mark - Accessor
 - (UIImageView *)mediumImageView {
     if (!_mediumImageView) {
         _mediumImageView = [[UIImageView alloc] init];

@@ -10,9 +10,10 @@
 #import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 
-
+/**
+ *  作用于系统的权限 设置等
+ */
 @interface NSObject (WZCommon)
-
 
 
 /**

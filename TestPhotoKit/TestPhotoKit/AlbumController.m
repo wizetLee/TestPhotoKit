@@ -22,7 +22,7 @@
     [self setupViews];
     [self getAllPhotosFromAlbum];
     
-#pragma mark 获取video   这段代码这个VC没有使用
+#pragma mark - 获取video   这段代码这个VC没有使用
     PHFetchResult<PHAsset *> *assetsResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeVideo options:nil];
     PHVideoRequestOptions *options2 = [[PHVideoRequestOptions alloc] init];
     options2.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;

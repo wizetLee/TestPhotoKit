@@ -23,7 +23,7 @@
 
 @implementation WZRoundRenderLayer
 
-#pragma mark Initalize
+#pragma mark - Initalize
 - (instancetype)initWithCircleRadius:(CGFloat)circleRadius layerLineWidth:(CGFloat)layerLineWidth {
     if (self = [super init]) {
         _circleRadius = circleRadius;
@@ -66,7 +66,7 @@
     }
 }
 
-#pragma mark setter & getter 
+#pragma mark - setter & getter 
 
 - (CAShapeLayer *)surfaceLayer {
     if (!_surfaceLayer) {

@@ -9,69 +9,118 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 #import "NSObject+WZCommon.h"
-#define WZMediaAsset_customSize CGSizeMake(2000, 2000)
-#define WZMediaAsset_thumbnailSize CGSizeMake(250, 250)
+#define WZMediaAsset_customSize CGSizeMake(2000, 2000)  //大图限定的尺寸
+#define WZMediaAsset_thumbnailSize CGSizeMake(250, 250)  //缩略图限定的尺寸
 
 #define MACRO_COLOR_HEX_ALPHA(hexValue, alpha) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16))/255.0 green:((float)((hexValue & 0xFF00) >> 8))/255.0 blue:((float)(hexValue & 0xFF))/255.0 alpha:alpha]
 #define MACRO_COLOR_HEX(hexValue) MACRO_COLOR_HEX_ALPHA(hexValue, 1.0)
 
 @class WZMediaAsset;
-@protocol WZProtocol_mediaAsset <NSObject>
+@protocol WZProtocolMediaAsset <NSObject>
 
 @optional
 
+/**
+ *  选中图片的自定义资源集合的回调
+ *
+ *  @param assets 自定义资源集合
+ */
 - (void)fetchAssets:(NSArray <WZMediaAsset *> *)assets;
 
 //同步获取图片数据 images + loading + end + callback
+/**
+ *  选中图片集合的回调
+ *
+ *  @param images 图片集合
+ */
 - (void)fetchImages:(NSArray <UIImage *> *)images;
 
 @end
 
+/**
+ *  media类型枚举
+ */
 typedef NS_ENUM(NSUInteger, WZMediaType) {
-    WZMediaType_unknow = 0,
-    WZMediaType_photo = 1,
-    WZMediaType_video = 2,
-    WZMediaType_audio = 3,
+    /**
+     *  未知类型（默认）
+     */
+    WZMediaTypeUnknow = 0,
+    /**
+     *  图片类型
+     */
+    WZMediaTypePhoto = 1,
+    /**
+     *  视频类型
+     */
+    WZMediaTypeVideo = 2,
+    /**
+     *  音频类型
+     */
+    WZMediaTypeAudio = 3,
 };
 
 @interface WZMediaAsset : NSObject
 
-@property (nonatomic, assign) BOOL selected;
-@property (nonatomic, assign) BOOL origion;
+@property (nonatomic, assign) BOOL selected;//是否已被选中
+@property (nonatomic, assign) BOOL origion;//是否应显示原尺寸图片
 
-@property (nonatomic, strong) PHAsset *asset;
-@property (nonatomic, assign) WZMediaType mediaType;
+@property (nonatomic, strong) PHAsset *asset;//元数据资源
+@property (nonatomic, assign) WZMediaType mediaType;//meida 类型 video image 等
 
-@property (nonatomic, strong) UIImage *imageClear;
-@property (nonatomic, strong) UIImage *imageThumbnail;
+@property (nonatomic, strong) UIImage *imageClear;//清晰图（原尺寸图片或者是大图{2000, 200s0}）
+@property (nonatomic, strong) UIImage *imageThumbnail;//缩略图{250, 250}
 
-@property (nonatomic, strong) NSURL *urlMedia;
-@property (nonatomic, strong) NSString *stringClearPath;
+@property (nonatomic, strong) NSURL *remoteMediaURL;//用于获取远程资源的URL
+@property (nonatomic, strong) NSString *clearPath;//保存到本地的清晰图的路径
 
+/**
+ *  获取缩略图
+ *
+ *  @param synchronous 是否同步
+ *  @param handler     图片回调
+ */
 - (void)fetchThumbnailImageSynchronous:(BOOL)synchronous handler:(void (^)(UIImage *image))handler;
+
+/**
+ *  获取原尺寸图
+ *
+ *  @param synchronous 是否同步
+ *  @param handler     图片回调
+ */
 - (void)fetchOrigionImageSynchronous:(BOOL)synchronous handler:(void (^)(UIImage *image))handler;
 
 @end
 
 @interface WZMediaAssetCollection : NSObject
 
-@property (nonatomic, strong) NSArray <WZMediaAsset *>* mediaAssetArray;
-@property (nonatomic, strong) PHAssetCollection *assetCollection;
-@property (nonatomic, strong) NSString *string_title;
-@property (nonatomic, strong) WZMediaAsset *coverAssset;//默认是 assetMArray 首个元素
+@property (nonatomic, strong) NSArray <WZMediaAsset *>* mediaAssetArray;//数据载体
+@property (nonatomic, strong) PHAssetCollection *assetCollection;//相册的载体
+@property (nonatomic, strong) NSString *title;//相册的title
+@property (nonatomic, strong) WZMediaAsset *coverAssset;//封面资源 默认是 assetMArray 首个元素
 
-//自定义封面
+/**
+ *  自定义封面资源
+ *
+ *  @param mediaAsset 自定义的封面资源
+ *  @param handler    回调所得到的封面图
+ */
 - (void)customCoverWithMediaAsset:(WZMediaAsset *)mediaAsset withCoverHandler:(void(^)(UIImage *image))handler;
-//默认封面
+
+/**
+ *  封面图的回调
+ *
+ *  @param handler 回调所得到的封面图
+ */
 - (void)coverHandler:(void(^)(UIImage *image))handler;
 
 @end
 
 @interface WZMediaFetcher : NSObject
 
+//获取所需要的资源集合的集合
 + (NSMutableArray <WZMediaAssetCollection *> *)fetchAssetCollection;
 
-#pragma mark Fetch Picture
+#pragma mark - Fetch Picture
 
 /**
  *  获取目标资源的缩略图 size为WZMediaAsset_thumbnailSize
@@ -118,10 +167,10 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
  */
 + (int32_t)fetchImageWith:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData *  imageData, NSString * dataUTI, UIImageOrientation orientation, NSDictionary *  info))handler;
 
-#pragma mark Fetch Video
+#pragma mark - Fetch Video
 
 
 
-#pragma mark Fetch Audio
+#pragma mark - Fetch Audio
 
 @end

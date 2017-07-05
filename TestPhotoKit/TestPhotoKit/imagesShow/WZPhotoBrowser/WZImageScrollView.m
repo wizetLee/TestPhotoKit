@@ -17,7 +17,7 @@
 
 @implementation WZImageScrollView
 
-#pragma mark Life Cycle
+#pragma mark - Life Cycle
 - (instancetype)init
 {
     self = [super init];
@@ -51,7 +51,7 @@
     return self;
 }
 
-#pragma mark public
+#pragma mark - public
 - (void)matchingPicture:(UIImage *)image {
     if ([image isKindOfClass:[UIImage class]]) {
         _pictureImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -71,7 +71,7 @@
     }
 }
 
-#pragma mark Common
+#pragma mark - Common
 - (void)gesture:(UIGestureRecognizer *)sender {
     if (sender == _singleTap) {
         if ([_imageScrollDelegate respondsToSelector:@selector(singleTap:)]) {
@@ -170,7 +170,7 @@
     [self matchImageViewCenter];
 }
 
-#pragma mark UIScrollViewDelegate
+#pragma mark - UIScrollViewDelegate
 
 //产生了变焦 镜头发生变化的时候 contentSize 也会发生改变 要同步imageView的位置
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView NS_AVAILABLE_IOS(3_2) {
