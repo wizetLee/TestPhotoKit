@@ -68,8 +68,8 @@
         VC.imagesBrowseDelegate = (id<WZProtocolImageBrowse>)locatedVC;
         VC.mediaAssetArray = imagesMArray;
         
-        VC.restrictNumber = 9;
-        [VC showInIndex:0 withAnimated:true];
+        VC.restrictNumber = 9;//控制选中图片的数目
+        [VC showInIndex:0 animated:true];
         [locatedVC presentViewController:VC animated:true completion:^{}];
     }
 }

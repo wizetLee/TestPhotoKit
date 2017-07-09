@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 #import "NSObject+WZCommon.h"
-#define WZMediaAsset_customSize CGSizeMake(2000, 2000)  //大图限定的尺寸
-#define WZMediaAsset_thumbnailSize CGSizeMake(250, 250)  //缩略图限定的尺寸
+#define WZMEDIAASSET_CUSTOMSIZE CGSizeMake(2000, 2000)  //大图限定的尺寸
+
+#define WZMEDIAASSET_THUMBNAILSIZE CGSizeMake(250, 250)  //缩略图限定的尺寸
 
 #define MACRO_COLOR_HEX_ALPHA(hexValue, alpha) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16))/255.0 green:((float)((hexValue & 0xFF00) >> 8))/255.0 blue:((float)(hexValue & 0xFF))/255.0 alpha:alpha]
 #define MACRO_COLOR_HEX(hexValue) MACRO_COLOR_HEX_ALPHA(hexValue, 1.0)
@@ -59,6 +60,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
     WZMediaTypeAudio = 3,
 };
 
+#pragma mark - WZMediaAsset
 @interface WZMediaAsset : NSObject
 
 @property (nonatomic, assign) BOOL selected;//是否已被选中
@@ -91,6 +93,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 
 @end
 
+#pragma mark - WZMediaAssetCollection
 @interface WZMediaAssetCollection : NSObject
 
 @property (nonatomic, strong) NSArray <WZMediaAsset *>* mediaAssetArray;//数据载体
@@ -115,6 +118,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 
 @end
 
+#pragma mark - WZMediaFetcher
 @interface WZMediaFetcher : NSObject
 
 //获取所需要的资源集合的集合
@@ -123,7 +127,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 #pragma mark - Fetch Picture
 
 /**
- *  获取目标资源的缩略图 size为WZMediaAsset_thumbnailSize
+ *  获取目标资源的缩略图 size为WZMEDIAASSET_THUMBNAILSIZE
  *
  *  @param mediaAsset  目标资源
  *  @param synchronous 是否同步获取

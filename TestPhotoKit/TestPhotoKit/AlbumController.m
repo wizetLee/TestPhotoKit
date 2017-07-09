@@ -69,7 +69,7 @@
     AlbumCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ALBUMCELLID forIndexPath:indexPath];
 //    cell.backgroundColor= [UIColor redColor];
     CGSizeMake(self.assets[indexPath.row].pixelWidth, self.assets[indexPath.row].pixelHeight);
-    [[PHCachingImageManager defaultManager] requestImageForAsset:self.assets[indexPath.row] targetSize: CGSizeMake(110, 110) contentMode:PHImageContentModeDefault options:self.options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [[PHImageManager defaultManager] requestImageForAsset:self.assets[indexPath.row] targetSize: CGSizeMake(110, 110) contentMode:PHImageContentModeDefault options:self.options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         cell.photoImageView.contentMode = UIViewContentModeScaleAspectFit;
         cell.photoImageView.image = result;
 ////        NSLog(@"%@",result);

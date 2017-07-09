@@ -74,7 +74,7 @@
                         [mArray_images addObject:image];
                     }];
                 } else {
-                    [WZMediaFetcher fetchImageWith:mediaAsset.asset costumSize:WZMediaAsset_customSize synchronous:true handler:^(UIImage *image) {
+                    [WZMediaFetcher fetchImageWith:mediaAsset.asset costumSize:WZMEDIAASSET_CUSTOMSIZE synchronous:true handler:^(UIImage *image) {
                         [mArray_images addObject:image];
                     }];
                 }
@@ -172,7 +172,7 @@
         VC.imagesBrowseDelegate = (id<WZProtocolImageBrowse>)self;
         VC.mediaAssetArray = self.mediaAssetArray;
         VC.restrictNumber = self.restrictNumber;
-        [VC showInIndex:indexPath.row withAnimated:true];
+        [VC showInIndex:indexPath.row animated:true];
         [self presentViewController:VC animated:true completion:^{}];
     }
 }

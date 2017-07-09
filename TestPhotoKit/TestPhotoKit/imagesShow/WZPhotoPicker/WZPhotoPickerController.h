@@ -17,4 +17,5 @@
 @property (nonatomic, weak) id<WZProtocolMediaAsset> delegate;
 @property (nonatomic, strong) NSArray <WZMediaAsset *>* mediaAssetArray;
 @property (nonatomic, assign) NSUInteger restrictNumber;
+
 @end

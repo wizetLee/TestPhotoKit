@@ -111,7 +111,7 @@
     return _renderBezierPath;
 }
 
-- (void)setRenderAngle:(double)renderAngle {
+- (void)setRenderAngle:(float)renderAngle {
     if (renderAngle < 0) {
         renderAngle = 0;
     }

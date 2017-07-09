@@ -29,7 +29,7 @@
 @property (nonatomic, assign) NSUInteger restrictNumber;//限制选图数目 ＝0时无选图限制
 @property (nonatomic, strong) WZMediaAsset *currentMediaAsset;//当前集合
 
-- (void)showInIndex:(NSInteger)index withAnimated:(BOOL)animated;//控制器定位
+- (void)showInIndex:(NSInteger)index animated:(BOOL)animated;//控制器定位
 - (void)matchThumnailImageWith:(WZImageContainerController *)VC;//控制器缩略图匹配
 - (void)matchClearImageWith:(WZImageContainerController *)VC;//控制器上清晰图匹配
 

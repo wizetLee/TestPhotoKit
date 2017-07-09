@@ -118,7 +118,7 @@
                 }];
             } else {
                 //渲染成本太高 不选源图
-                _imageRequestID = [WZMediaFetcher fetchImageWith:asset.asset costumSize:WZMediaAsset_customSize synchronous:false handler:^(UIImage *image) {
+                _imageRequestID = [WZMediaFetcher fetchImageWith:asset.asset costumSize:WZMEDIAASSET_CUSTOMSIZE synchronous:false handler:^(UIImage *image) {
                     [VC matchingPicture:image];
                 }];
             }

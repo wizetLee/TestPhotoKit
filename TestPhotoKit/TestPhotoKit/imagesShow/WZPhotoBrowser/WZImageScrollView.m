@@ -8,7 +8,7 @@
 
 #import "WZImageScrollView.h"
 
-#define  WZ_MAX_ZOOMSCALE 3.0
+#define  WZ_MAX_ZOOMSCALE 3.0 //最大缩放比例
 @interface WZImageScrollView ()
 
 @property (nonatomic, strong) UIImageView *pictureImageView;

@@ -28,7 +28,7 @@
 /**
  *  设置进行绘制弧
  */
-@property (nonatomic, assign) double renderAngle;//范围 0 ~ M_PI * 2.0
+@property (nonatomic, assign) float renderAngle;//范围 0 ~ M_PI * 2.0
 
 @property (nonatomic, weak) id<WZRoundRenderLayerDelegate> renderLayerDelegate;
 

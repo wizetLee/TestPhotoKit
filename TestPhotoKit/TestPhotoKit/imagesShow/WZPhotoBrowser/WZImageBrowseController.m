@@ -36,16 +36,8 @@
          */
         //自定义跳转代理
         //        self.transitioningDelegate = self;
+        
         _currentIndex = 0;
-        //        _numberOfIndexs = 9;
-        ////        _datas
-        //        NSMutableArray *array = [NSMutableArray array];
-        //        for (int i = 0; i< 10; i++) {
-        //            WZMediaAsset *asset = [[WZMediaAsset alloc] init];
-        //            asset.name = [NSString stringWithFormat:@"我是%d号",i];
-        //            [array addObject:asset];
-        //        }
-        //        _datas = [NSArray arrayWithArray:array];
     }
     return self;
 }
@@ -85,7 +77,7 @@
 }
 
 #pragma mark - Show VC in index
-- (void)showInIndex:(NSInteger)index withAnimated:(BOOL)animated {
+- (void)showInIndex:(NSInteger)index animated:(BOOL)animated {
     
     if (index <= 0) {index = 0;}
     if (index > _numberOfIndexs) {index = _numberOfIndexs;}

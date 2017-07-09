@@ -25,6 +25,36 @@
     [super viewDidLoad];
     //权限请求
     [NSObject requestPhotosLibraryAuthorization:nil];
+    
+    // 列出所有相册智能相册
+//    WZMediaFetcher;
+//    PHFetchOptions *fetchResoultOption = [[PHFetchOptions alloc] init];
+//    fetchResoultOption.includeHiddenAssets = false;
+//    fetchResoultOption.includeAllBurstAssets = false;
+//    
+//    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:fetchResoultOption];
+//     [PHCollection fetchTopLevelUserCollectionsWithOptions:fetchResoultOption];
+//    
+//    [smartAlbums enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        if ([obj isKindOfClass:[PHAssetCollection class]]) {
+//            PHAssetCollection *assetCollection = (PHAssetCollection *)obj;
+//            NSLog(@"%@", assetCollection.localizedTitle);
+//            if ([assetCollection canPerformEditOperation:PHCollectionEditOperationDeleteContent]) {
+////             PHImageManager
+//            }
+//        }
+//    }];
+//    NSLog(@"smartAlbums.count：%ld", smartAlbums.count);
+    
+//    PHImageManager PHImageManager
+    
+    // 列出所有用户创建的相册
+//    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+//    PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:fetchResoultOption];
+    
+ 
+    
+    
 }
 
 - (IBAction)allPhotos:(id)sender {
@@ -82,7 +112,7 @@
     
     //    PHImageManager 处理图片加载，加载图片过程有缓存处理
     
-    //    PHCachingImageManager(PHImageManager的抽象) 处理图像的整个加载过程的缓存 要加载大量资源的缩略图时可以使用该类的startCachingImage... 预先将一些图像加载到内存中，达到预先缓冲的效果
+    //    PHImageManager(PHImageManager的抽象) 处理图像的整个加载过程的缓存 要加载大量资源的缩略图时可以使用该类的startCachingImage... 预先将一些图像加载到内存中，达到预先缓冲的效果
     
     //    PHImageRequestOptions 设置加载图片方式的参数()
     
@@ -231,7 +261,7 @@
     [WZRemoteImageBrowseController showRemoteImagesWithURLArray:urlMArray loactedVC:self];
 }
 
-#pragma mark - WZProtocolMediaAsset  选图片回调
+#pragma mark - WZProtocolMediaAsset 选图片回调
 
 - (void)fetchAssets:(NSArray <WZMediaAsset *> *)assets {
     NSLog(@"%@",assets);

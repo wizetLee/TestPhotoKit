@@ -92,7 +92,7 @@
     
     for (PHAssetCollection *assetCollection in result_smartAlbums) {
         PHFetchResult<PHAsset *> *fetchResoult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:[[self class] configImageOptions]];
-        
+      
         //过滤无图片的fetchResoult 配置数据源
         if (fetchResoult.count) {
             
@@ -115,7 +115,7 @@
 }
 
 + (int32_t)fetchThumbnailWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler {
-    CGSize targetSize = WZMediaAsset_thumbnailSize;
+    CGSize targetSize = WZMEDIAASSET_THUMBNAILSIZE;
     PHImageRequestID imageRequestID = [self fetchImageWith:mediaAsset targetSize:targetSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (handler) {
             handler(result);
@@ -176,11 +176,12 @@
     return imageRequestID;
 }
 
+#pragma mark - 配置
 //过滤出image类型的资源
 + (PHFetchOptions *)configImageOptions {
     PHFetchOptions *fetchResoultOption = [[PHFetchOptions alloc] init];
-    fetchResoultOption.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];
-    fetchResoultOption.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];
+    fetchResoultOption.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];//按照日期降序排序
+    fetchResoultOption.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];//过滤剩下照片类型
     return fetchResoultOption;
 }
 
