@@ -57,7 +57,7 @@
     return self;
 }
 
-- (void)setmainVC:(UIViewController <WZProtocolImageScrollView>*)mainVC {
+- (void)setMainVC:(UIViewController <WZProtocolImageScrollView>*)mainVC {
     if ([mainVC isKindOfClass:[UIViewController class]]) {
         _mainVC = mainVC;
         _scrollPictureView.imageScrollDelegate = (id<WZProtocolImageScrollView>)_mainVC;
