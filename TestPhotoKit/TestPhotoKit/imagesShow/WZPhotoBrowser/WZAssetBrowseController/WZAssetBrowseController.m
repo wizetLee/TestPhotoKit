@@ -79,7 +79,7 @@
         if (asset.imageThumbnail) {
             [VC matchingPicture:asset.imageThumbnail];
         } else {
-            [WZMediaFetcher fetchThumbnailWith:asset.asset synchronous:false handler:^(UIImage *thumbnail) {
+            [WZMediaFetcher fetchThumbnailWithAsset:asset.asset synchronous:false handler:^(UIImage *thumbnail) {
                 asset.imageThumbnail = thumbnail;
                 [VC matchingPicture:asset.imageThumbnail];
             }];
@@ -118,13 +118,13 @@
                 }];
             } else {
                 //渲染成本太高 不选源图
-                _imageRequestID = [WZMediaFetcher fetchImageWith:asset.asset costumSize:WZMEDIAASSET_CUSTOMSIZE synchronous:false handler:^(UIImage *image) {
+                _imageRequestID = [WZMediaFetcher fetchImageWithAsset:asset.asset costumSize:WZMEDIAASSET_CUSTOMSIZE synchronous:false handler:^(UIImage *image) {
                     [VC matchingPicture:image];
                 }];
             }
             
             //数据计算
-            _imageDataRequestID = [WZMediaFetcher fetchImageWith:asset.asset synchronous:false handler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            _imageDataRequestID = [WZMediaFetcher fetchImageWithAsset:asset.asset synchronous:false handler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                 [self caculateImageDataWithData:imageData];
             }];
         }

@@ -74,7 +74,7 @@
                         [mArray_images addObject:image];
                     }];
                 } else {
-                    [WZMediaFetcher fetchImageWith:mediaAsset.asset costumSize:WZMEDIAASSET_CUSTOMSIZE synchronous:true handler:^(UIImage *image) {
+                    [WZMediaFetcher fetchImageWithAsset:mediaAsset.asset costumSize:WZMEDIAASSET_CUSTOMSIZE synchronous:true handler:^(UIImage *image) {
                         [mArray_images addObject:image];
                     }];
                 }

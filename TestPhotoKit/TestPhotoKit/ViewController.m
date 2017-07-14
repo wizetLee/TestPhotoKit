@@ -14,7 +14,6 @@
 #import "WZRemoteImageBrowseController.h"
 #import "WZMediaFetcher.h"
 
-
 @interface ViewController ()<WZProtocolMediaAsset>
 
 @end
@@ -25,7 +24,6 @@
     [super viewDidLoad];
     //权限请求
     [NSObject requestPhotosLibraryAuthorization:nil];
-    
     // 列出所有相册智能相册
 //    WZMediaFetcher;
 //    PHFetchOptions *fetchResoultOption = [[PHFetchOptions alloc] init];
@@ -53,7 +51,21 @@
 //    PHFetchResult *topLevelUserCollections = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:fetchResoultOption];
     
  
+//  NSArray <WZMediaAssetCollection *>* array = [WZMediaFetcher customMediaAssetCollectionOnlyImageHybirdVideoAsset];
+//    for (WZMediaAssetCollection *collection in array) {
+//        NSLog(@"%@", collection);
+////        collection.assetCollection
+//        PHFetchResult *result = [PHAsset fetchAssetsInAssetCollection:collection.assetCollection options:nil];
+//        NSLog(@"%ld", result.count);
+//        for (int i = 0; i < result.count; i++) {
+//            
+//        }
+//    }
     
+    
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     
 }
 

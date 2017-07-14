@@ -16,7 +16,7 @@
 }
 
 - (void)fetchThumbnailImageSynchronous:(BOOL)synchronous handler:(void (^)(UIImage *image))handler {
-    [WZMediaFetcher fetchThumbnailWith:_asset  synchronous:synchronous handler:^(UIImage *thumbnail) {
+    [WZMediaFetcher fetchThumbnailWithAsset:_asset  synchronous:synchronous handler:^(UIImage *thumbnail) {
         _imageThumbnail = thumbnail;
         if (handler) {handler(thumbnail);};
     }];
@@ -37,7 +37,7 @@
     if ([mediaAsset isKindOfClass:[WZMediaAsset class]]) {
         _coverAssset = mediaAsset;
         if (handler) {
-            [WZMediaFetcher fetchThumbnailWith:mediaAsset.asset synchronous:false handler:^(UIImage *thumbnail) {
+            [WZMediaFetcher fetchThumbnailWithAsset:mediaAsset.asset synchronous:false handler:^(UIImage *thumbnail) {
                 handler(thumbnail);
             }];
         }
@@ -88,11 +88,16 @@
                                          subtype:PHAssetCollectionSubtypeAlbumRegular
                                          options:fetchOptions];
     
+    NSMutableArray <WZMediaAssetCollection *>* mmediaAssetArrayCollection = [[self class] universalMediaAssetCollectionWith:result_smartAlbums];
+    return mmediaAssetArrayCollection;
+}
+
++ ( NSMutableArray <WZMediaAssetCollection *>*)universalMediaAssetCollectionWith:(PHFetchResult *)result_smartAlbums {
     NSMutableArray <WZMediaAssetCollection *>* mmediaAssetArrayCollection = [NSMutableArray array];
     
     for (PHAssetCollection *assetCollection in result_smartAlbums) {
         PHFetchResult<PHAsset *> *fetchResoult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:[[self class] configImageOptions]];
-      
+        
         //过滤无图片的fetchResoult 配置数据源
         if (fetchResoult.count) {
             
@@ -114,9 +119,54 @@
     return mmediaAssetArrayCollection;
 }
 
-+ (int32_t)fetchThumbnailWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler {
+
+//+ (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyImageAsset {
+//    
+//}
+//+ (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyVideoAsset {
+//    
+//}
+////获取个人创建的相册的集合<也有视频/图片类型>
+//+ (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyImageHybirdVideoAsset {
+//    NSMutableArray <WZMediaAssetCollection *>* mmediaAssetArrayCollection = [NSMutableArray array];
+//    PHFetchResult *customCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+//    for (PHAssetCollection *assetCollection in customCollections) {
+//        PHFetchResult<PHAsset *> *fetchResoult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:[[self class] configImageOptions]];
+//        
+//        //过滤无图片的fetchResoult 配置数据源
+//        if (fetchResoult.count) {
+//            WZMediaAssetCollection *mediaAssetCollection = [[WZMediaAssetCollection alloc] init];
+//            mediaAssetCollection.assetCollection = assetCollection;
+//            mediaAssetCollection.title = assetCollection.localizedTitle;
+//            [mmediaAssetArrayCollection addObject:mediaAssetCollection];
+//            NSMutableArray <WZMediaAsset *>*mmediaAssetArray = [NSMutableArray array];
+//            for (PHAsset *asset in fetchResoult) {
+//                WZMediaAsset *object = [[WZMediaAsset alloc] init];
+//                object.asset = asset;
+//                [mmediaAssetArray addObject:object];
+//            }
+//            mediaAssetCollection.mediaAssetArray = [NSArray arrayWithArray:mmediaAssetArray];
+//        }
+//    }
+//    return mmediaAssetArrayCollection;
+//}
+//
+
+/*
+ //  用户自定义的资源
+ PHFetchResult *customCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+ for (PHAssetCollection *collection in customCollections) {
+ PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+ [nameArr addObject:collection.localizedTitle];
+ [assetArr addObject:assets];
+ }
+ */
+
+
+
++ (int32_t)fetchThumbnailWithAsset:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler {
     CGSize targetSize = WZMEDIAASSET_THUMBNAILSIZE;
-    PHImageRequestID imageRequestID = [self fetchImageWith:mediaAsset targetSize:targetSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    PHImageRequestID imageRequestID = [self fetchImageWithAsset:mediaAsset targetSize:targetSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (handler) {
             handler(result);
         }
@@ -126,7 +176,7 @@
 
 + (int32_t)fetchOrigionWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *origion))handler {
     CGSize targetSize = CGSizeMake(mediaAsset.pixelWidth, mediaAsset.pixelHeight);
-    PHImageRequestID imageRequestID = [self fetchImageWith:mediaAsset targetSize:targetSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    PHImageRequestID imageRequestID = [self fetchImageWithAsset:mediaAsset targetSize:targetSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (handler) {
             handler(result);
         }
@@ -134,8 +184,8 @@
     return imageRequestID;
 }
 
-+ (int32_t)fetchImageWith:(PHAsset *)mediaAsset costumSize:(CGSize)customSize synchronous:(BOOL)synchronous handler:(void(^)(UIImage *image))handler {
-    PHImageRequestID imageRequestID = [self fetchImageWith:mediaAsset targetSize:customSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
++ (int32_t)fetchImageWithAsset:(PHAsset *)mediaAsset costumSize:(CGSize)customSize synchronous:(BOOL)synchronous handler:(void(^)(UIImage *image))handler {
+    PHImageRequestID imageRequestID = [self fetchImageWithAsset:mediaAsset targetSize:customSize synchronous:synchronous handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (handler) {
             handler(result);
         }
@@ -143,7 +193,7 @@
     return imageRequestID;
 }
 
-+ (int32_t)fetchImageWith:(PHAsset *)asset targetSize:(CGSize)targetSize synchronous:(BOOL)synchronous handler:(void (^)(UIImage * _Nullable result, NSDictionary * _Nullable info))handler {
++ (int32_t)fetchImageWithAsset:(PHAsset *)asset targetSize:(CGSize)targetSize synchronous:(BOOL)synchronous handler:(void (^)(UIImage * _Nullable result, NSDictionary * _Nullable info))handler {
     //图片请求选项配置 同步异步配置
     PHImageRequestOptions *imageRequestOption = [self configImageRequestOption];
     if (synchronous) {
@@ -159,7 +209,7 @@
     return imageRequestID;
 }
 
-+ (int32_t)fetchImageWith:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info))handler {
++ (int32_t)fetchImageWithAsset:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info))handler {
     //图片请求选项配置
     //图片请求选项配置 同步异步配置
     PHImageRequestOptions *imageRequestOption = [self configImageRequestOption];
@@ -184,6 +234,9 @@
     fetchResoultOption.predicate = [NSPredicate predicateWithFormat:@"mediaType = %d",PHAssetMediaTypeImage];//过滤剩下照片类型
     return fetchResoultOption;
 }
+
+
+
 
 + (PHImageRequestOptions *)configImageRequestOption {
     //图片请求选项配置
@@ -214,7 +267,7 @@
 ////    if (targetSize.height <= 300 || targetSize.width <= 300) {
 ////        NSLog(@"< 300");
 ////    }
-//    [self fetchImageWith:mediaAsset targetSize:targetSize handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+//    [self fetchImageWithAsset:mediaAsset targetSize:targetSize handler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
 //        //写进file中
 //        NSString *path = nil;
 //        if ([info[@"PHImageFileURLKey"] isKindOfClass:[NSURL class]]) {
@@ -315,6 +368,25 @@
 //}
 
 #pragma mark - Fetch Video
++ (int32_t)fetchVideoWith:(PHAsset *)asset {
+    PHVideoRequestOptions *videoRequsetOptions = [[PHVideoRequestOptions alloc] init];
+    videoRequsetOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
+    videoRequsetOptions.networkAccessAllowed = false;
+    PHImageRequestID imageRequestID = [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:videoRequsetOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+       
+    }];
+    
+    [[PHImageManager defaultManager] requestPlayerItemForVideo:asset options:videoRequsetOptions resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
+        
+    }];
+    
+    [[PHImageManager defaultManager] requestExportSessionForVideo:asset options:videoRequsetOptions exportPreset:@"" resultHandler:^(AVAssetExportSession * _Nullable exportSession, NSDictionary * _Nullable info) {
+        
+    }];
+    
+    
+    return imageRequestID;
+}
 
 
 

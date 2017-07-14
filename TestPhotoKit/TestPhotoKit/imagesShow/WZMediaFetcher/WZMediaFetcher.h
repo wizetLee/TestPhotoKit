@@ -121,8 +121,28 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 #pragma mark - WZMediaFetcher
 @interface WZMediaFetcher : NSObject
 
+//扩展  获取视频  以及  特定音频的资源组合
 //获取所需要的资源集合的集合
+
+//获取最普通的资源集合
 + (NSMutableArray <WZMediaAssetCollection *> *)fetchAssetCollection;
+
+//获取拥有所有图片的胶卷集合
++ (NSArray <PHAsset *> *)allImagesAssets;
+
+//获取拥有所有视频的集合
++ (NSArray <PHAsset *> *)allVideosAssets;
+
+
+
+//获取个人自定义创建的相册（也就是我的相簿）的集合<只有图片类型>
++ (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyImageAsset;
+//获取个人自定义创建的相册（也就是我的相簿）的集合<只有视频类型>
++ (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyVideoAsset;
+//获取个人自定义创建的相册（也就是我的相簿）的集合<也有视频/图片类型>
++ (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyImageHybirdVideoAsset;
+
+
 
 #pragma mark - Fetch Picture
 
@@ -135,7 +155,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
  *
  *  @return 资源ID
  */
-+ (int32_t)fetchThumbnailWith:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler ;
++ (int32_t)fetchThumbnailWithAsset:(PHAsset *)mediaAsset synchronous:(BOOL)synchronous handler:(void(^)(UIImage *thumbnail))handler ;
 
 /**
  *  获取目标资源的原尺寸图
@@ -158,7 +178,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
  *
  *  @return 资源ID
  */
-+ (int32_t)fetchImageWith:(PHAsset *)mediaAsset costumSize:(CGSize)customSize synchronous:(BOOL)synchronous handler:(void(^)(UIImage *origion))handler;
++ (int32_t)fetchImageWithAsset:(PHAsset *)mediaAsset costumSize:(CGSize)customSize synchronous:(BOOL)synchronous handler:(void(^)(UIImage *origion))handler;
 
 /**
  *  获取目标资源的原尺寸图
@@ -169,10 +189,10 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
  *
  *  @return 资源ID
  */
-+ (int32_t)fetchImageWith:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData *  imageData, NSString * dataUTI, UIImageOrientation orientation, NSDictionary *  info))handler;
++ (int32_t)fetchImageWithAsset:(PHAsset *)asset synchronous:(BOOL)synchronous handler:(void (^)(NSData *  imageData, NSString * dataUTI, UIImageOrientation orientation, NSDictionary *  info))handler;
 
 #pragma mark - Fetch Video
-
+//+ (int32_t)fetchVideoWith:(PHAsset *)asset
 
 
 #pragma mark - Fetch Audio
