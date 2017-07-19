@@ -56,7 +56,7 @@
 #pragma mark - Accessor
 - (UIButton *)selectButton {
     if (!_selectButton) {
-        CGFloat selectedBtnHW = 0;
+        CGFloat selectedBtnHW = 22;
         _selectButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - selectedBtnHW , 0, selectedBtnHW, selectedBtnHW)];
         [self.contentView addSubview:_selectButton];
         [_selectButton setImage:[UIImage imageNamed:@"message_oeuvre_btn_normal"] forState:UIControlStateNormal];

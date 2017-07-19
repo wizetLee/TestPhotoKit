@@ -62,6 +62,9 @@
 //        }
 //    }
     
+    [NSString stringWithFormat:@"%@", 0];
+    int array[10];
+    array[0] = 1;
     
 }
 
