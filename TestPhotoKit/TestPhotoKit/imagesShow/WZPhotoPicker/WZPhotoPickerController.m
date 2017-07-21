@@ -90,7 +90,7 @@
     }
 }
 
-- (void) dismiss{
+- (void)dismiss {
     [self dismissViewControllerAnimated:true completion:^{
         if ([_delegate respondsToSelector:@selector(fetchAssets:)]) {
             NSMutableArray *mmediaAssetArray_callback = [NSMutableArray array];
@@ -193,7 +193,7 @@
 }
 
 #pragma mark - Accessor
-- (void)setmediaAssetArray:(NSArray<WZMediaAsset *> *)mediaAssetArray {
+- (void)setMediaAssetArray:(NSArray<WZMediaAsset *> *)mediaAssetArray {
     _mediaAssetArray = [mediaAssetArray isKindOfClass:[NSArray class]]?mediaAssetArray:nil;
     if (_collection) {
         [_collection reloadData];
