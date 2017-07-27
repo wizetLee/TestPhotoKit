@@ -60,6 +60,8 @@
                 asset.imageThumbnail = cacheImage;
             }
             NSLog(@"远程图片缓存Path:%@", [[SDImageCache sharedImageCache] defaultCachePathForKey:key]);
+            NSData *data = [NSData dataWithContentsOfFile:[[SDImageCache sharedImageCache] defaultCachePathForKey:key]];
+            NSLog(@"文件大小：%ld", data.length);
         }
     }
     
