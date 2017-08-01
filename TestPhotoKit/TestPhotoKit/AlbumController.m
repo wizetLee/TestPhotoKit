@@ -9,10 +9,13 @@
 #import "AlbumController.h"
 #import "ContainView.h"
 #import <Photos/Photos.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+
 @interface AlbumController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) ContainView *containView;
 @property (nonatomic, strong) PHImageRequestOptions *options;
 @property (nonatomic, strong) PHFetchResult<PHAsset *> *assets;
+
 @end
 
 @implementation AlbumController
@@ -26,11 +29,13 @@
     PHFetchResult<PHAsset *> *assetsResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeVideo options:nil];
     PHVideoRequestOptions *options2 = [[PHVideoRequestOptions alloc] init];
     options2.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
+    [options2 setNetworkAccessAllowed:true];
     for (PHAsset *a in assetsResult) {
         [[PHImageManager defaultManager] requestAVAssetForVideo:a options:options2 resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
             NSLog(@"%@",info);
             NSLog(@"%@",audioMix);
-            NSLog(@"%@",((AVURLAsset*)asset).URL);//asset为AVURLAsset类型  可直接获取相应视频的绝对地址
+            NSLog(@"%@",((AVURLAsset*)asset).URL);//asset为AVURLAsset类型  可直接获取相应视频的相对地址
+//            NSString *path = ((AVURLAsset*)asset).URL.path;//
         }];
     }
 }
@@ -46,8 +51,7 @@
     self.options = [[PHImageRequestOptions alloc] init];//请求选项设置
     self.options.resizeMode = PHImageRequestOptionsResizeModeExact;//自定义图片大小的加载模式
     self.options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    self.options.synchronous = YES;//是否同步加载 
-
+    self.options.synchronous = YES;//是否同步加载
     
     //容器类
     self.assets = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:nil]; //得到所有图片
@@ -68,7 +72,11 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AlbumCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ALBUMCELLID forIndexPath:indexPath];
 //    cell.backgroundColor= [UIColor redColor];
+    
+    //9.0可用
     CGSizeMake(self.assets[indexPath.row].pixelWidth, self.assets[indexPath.row].pixelHeight);
+    
+    [self adjustGIFWithAsset2:self.assets[indexPath.row]];
     [[PHImageManager defaultManager] requestImageForAsset:self.assets[indexPath.row] targetSize: CGSizeMake(110, 110) contentMode:PHImageContentModeDefault options:self.options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         cell.photoImageView.contentMode = UIViewContentModeScaleAspectFit;
         cell.photoImageView.image = result;
@@ -78,6 +86,45 @@
 //        NSLog(@"---------------------------------------------------------------");
     }];
     return cell;
+}
+
+
+/** 关于localIdentifier：
+ * 我们可以在第一次获取到相册中的 GIF 的时候，将其获取到的所有 GIF 的 localIdentifier 记录下来。这样，下次启动的时候，就可以通过这些 localIdentifier 来直接获取 GIF 资源
+ *  PHAsset fetchAssetsWithLocalIdentifiers:<#(nonnull NSArray<NSString *> *)#> options:<#(nullable PHFetchOptions *)#>
+ */
+#pragma mark - 判断资源是不是GIF ：（资源类型判别可以为UI提供一些图片类型的指示）
+////方法1 iOS 9.0
+- (BOOL)adjustGIFWithAsset:(PHAsset *)asset {
+    if ([asset isKindOfClass:[PHAsset class]]) {
+        //每个asset 都有一个或者多个PHAssetResource(如：被编辑保存过的aseet会有若干个resource, 且被修改后的GIF类型的asset得uniformTypeIdentifier 会发生改变变成了public.jpeg 类型，所以修改多地GIF的就不再是GIF了，所以要对比最后一个resource的类型)
+        NSArray<PHAssetResource *>* tmpArr = [PHAssetResource assetResourcesForAsset:asset];
+        if (tmpArr.count) {
+            PHAssetResource *resource = tmpArr.lastObject;
+            if (resource.uniformTypeIdentifier.length) {
+               return UTTypeConformsTo( (__bridge CFStringRef)resource.uniformTypeIdentifier, kUTTypeGIF);
+            }
+        }
+    }
+    return false;
+}
+
+//方法2
+- (BOOL)adjustGIFWithAsset2:(PHAsset *)asset {
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+    options.resizeMode = PHImageRequestOptionsResizeModeFast;
+    [options setSynchronous:true];//同步
+    __block NSString *dataUTIStr = nil;
+    if ([asset isKindOfClass:[PHAsset class]]) {
+        [[PHImageManager defaultManager] requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+            dataUTIStr = dataUTI;
+        }];
+    }
+    if (dataUTIStr.length) {
+        return UTTypeConformsTo( (__bridge CFStringRef)dataUTIStr, kUTTypeGIF);
+    }
+    return false;
 }
 
 /**mov转mp4格式 最好设一个block 转完码之后的回调*/
