@@ -69,6 +69,7 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 @property (nonatomic, strong) PHAsset *asset;//元数据资源
 @property (nonatomic, assign) WZMediaType mediaType;//meida 类型 video image 等
 
+///大小由宏定义
 @property (nonatomic, strong) UIImage *imageClear;//清晰图（原尺寸图片或者是大图{2000, 200s0}）
 @property (nonatomic, strong) UIImage *imageThumbnail;//缩略图{250, 250}
 
@@ -141,7 +142,6 @@ typedef NS_ENUM(NSUInteger, WZMediaType) {
 + (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyVideoAsset;
 //获取个人自定义创建的相册（也就是我的相簿）的集合<也有视频/图片类型>
 + (NSArray <WZMediaAssetCollection *> *)customMediaAssetCollectionOnlyImageHybirdVideoAsset;
-
 
 
 #pragma mark - Fetch Picture

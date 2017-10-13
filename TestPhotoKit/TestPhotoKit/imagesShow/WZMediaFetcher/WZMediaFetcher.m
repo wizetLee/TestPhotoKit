@@ -171,6 +171,53 @@
             handler(result);
         }
     }];
+    
+    ///数据信息 仅限于本地图片
+    PHContentEditingInputRequestOptions *options = [[PHContentEditingInputRequestOptions alloc] init];
+    [mediaAsset requestContentEditingInputWithOptions:options completionHandler:^(PHContentEditingInput * _Nullable contentEditingInput, NSDictionary * _Nonnull info) {
+        //        contentEditingInput.mediaType
+        //        contentEditingInput.mediaSubtypes
+        //        contentEditingInput.location
+        //        contentEditingInput.creationDate
+        if (contentEditingInput.creationDate) {
+            //创建日期
+            NSDateFormatter *dataFormer = [[NSDateFormatter alloc] init];
+            [dataFormer setDateStyle:NSDateFormatterNoStyle];
+            [dataFormer stringFromDate:contentEditingInput.creationDate];
+        }
+        
+        if (contentEditingInput.location) {
+            //经纬度
+            
+        }
+        
+        CIImage *fullImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+        NSDictionary *nsdic = fullImage.properties;
+        NSDictionary *originExif = nsdic[@"{Exif}"];
+        
+        // 镜头信息
+        NSString *lensModel = [NSString stringWithFormat:@"设备型号:%@",originExif[(NSString *)kCGImagePropertyExifLensModel]];
+        // 光圈系数
+        NSString *fNumber = [NSString stringWithFormat:@"光圈系数:f/%@",originExif[(NSString *)kCGImagePropertyExifFNumber]];
+        // 曝光时间
+        NSString *exposureTime = [NSString stringWithFormat:@"曝光时间:f/%@",originExif[(NSString *)kCGImagePropertyExifExposureTime]];
+        // 镜头焦距
+        NSString *focalLength = [NSString stringWithFormat:@"镜头焦距:%@mm",originExif[(NSString *)kCGImagePropertyExifFocalLength]];
+        // 日期和时间
+        NSString *dataTime = [NSString stringWithFormat:@"数字化时间:%@",originExif[(NSString *)kCGImagePropertyExifDateTimeDigitized]];
+        // ISO
+        NSString *isoSpeedRatings = [NSString stringWithFormat:@"ISO:%@",[originExif[(NSString *)kCGImagePropertyExifISOSpeedRatings] firstObject]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"%@", lensModel);
+            NSLog(@"%@", fNumber);
+            NSLog(@"%@", exposureTime);
+            NSLog(@"%@", focalLength);
+            NSLog(@"%@", dataTime);
+            NSLog(@"%@", isoSpeedRatings);
+        });
+    }];
+    
     return imageRequestID;
 }
 
@@ -181,6 +228,7 @@
             handler(result);
         }
     }];
+    
     return imageRequestID;
 }
 
@@ -245,13 +293,12 @@
     imageRequestOption.version = PHImageRequestOptionsVersionCurrent;
     //非同步
     imageRequestOption.synchronous = false;
-    //图片交付模式:快速
+    //图片交付模式:高质量格式
     imageRequestOption.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
     //图片请求模式:精确的
     imageRequestOption.resizeMode = PHImageRequestOptionsResizeModeExact;
     //用于对原始尺寸的图像进行裁剪，基于比例坐标。resizeMode 为 Exact 时有效。
     //  imageRequestOption.normalizedCropRect = CGRectMake(0, 0, 100, 100);
-    
     return imageRequestOption;
 }
 
@@ -368,13 +415,30 @@
 //}
 
 #pragma mark - Fetch Video
-+ (int32_t)fetchVideoWith:(PHAsset *)asset {
++ (int32_t)fetchVideoWith:(PHAsset *)asset synchronous:(BOOL)synchronous {
     PHVideoRequestOptions *videoRequsetOptions = [[PHVideoRequestOptions alloc] init];
     videoRequsetOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
     videoRequsetOptions.networkAccessAllowed = false;
+//  PHImageRequestID imageRequestID =
     PHImageRequestID imageRequestID = [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:videoRequsetOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
        
     }];
+    
+    if (synchronous) {
+        //异步
+        imageRequestID = [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:videoRequsetOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+            
+        }];
+    } else {
+        //同步 使用信号量
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        imageRequestID = [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:videoRequsetOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+            dispatch_semaphore_signal(semaphore);
+            
+        }];
+        //等待信号
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
     
     [[PHImageManager defaultManager] requestPlayerItemForVideo:asset options:videoRequsetOptions resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
         

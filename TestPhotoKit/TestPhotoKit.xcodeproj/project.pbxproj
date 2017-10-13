@@ -66,6 +66,7 @@
 		40F17E611D53870400A112E9 /* E8DE84D6-A559-4081-8EFC-BA4542890307.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "E8DE84D6-A559-4081-8EFC-BA4542890307.png"; sourceTree = "<group>"; };
 		844560D11EFA47DA00ABF0E3 /* WZToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZToast.h; sourceTree = "<group>"; };
 		844560D21EFA47DA00ABF0E3 /* WZToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZToast.m; sourceTree = "<group>"; };
+		8470250C1F90B28B00326B6E /* Direction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Direction.h; sourceTree = "<group>"; };
 		84CBF7F01EEE9C35006F3D55 /* NSObject+WZCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+WZCommon.h"; sourceTree = "<group>"; };
 		84CBF7F11EEE9C35006F3D55 /* NSObject+WZCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+WZCommon.m"; sourceTree = "<group>"; };
 		84CBF7F21EEE9C35006F3D55 /* WZMediaFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZMediaFetcher.h; sourceTree = "<group>"; };
@@ -291,6 +292,7 @@
 		84F405141D2F788E000A0A05 = {
 			isa = PBXGroup;
 			children = (
+				8470250C1F90B28B00326B6E /* Direction.h */,
 				84CBF87E1EEE9D7D006F3D55 /* ThirdLibrary */,
 				84F4051F1D2F788E000A0A05 /* TestPhotoKit */,
 				84F405391D2F788E000A0A05 /* TestPhotoKitUITests */,

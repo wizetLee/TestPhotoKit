@@ -101,6 +101,10 @@
     self.automaticallyAdjustsScrollViewInsets = false;
     [self getAuthorization];
     [self createViews];
+
+    NSLog(@"%@", NSStringFromUIEdgeInsets(self.additionalSafeAreaInsets));
+    NSLog(@"%@", NSStringFromUIEdgeInsets(self.view.safeAreaInsets));
+  
 }
 
 - (void)didReceiveMemoryWarning {
