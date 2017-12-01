@@ -102,8 +102,8 @@
     [self getAuthorization];
     [self createViews];
 
-    NSLog(@"%@", NSStringFromUIEdgeInsets(self.additionalSafeAreaInsets));
-    NSLog(@"%@", NSStringFromUIEdgeInsets(self.view.safeAreaInsets));
+//    NSLog(@"%@", NSStringFromUIEdgeInsets(self.additionalSafeAreaInsets));
+//    NSLog(@"%@", NSStringFromUIEdgeInsets(self.view.safeAreaInsets));
   
 }
 

@@ -404,7 +404,7 @@
 				TargetAttributes = {
 					84F4051C1D2F788E000A0A05 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 7MUPB6659U;
+						DevelopmentTeam = G583SJY324;
 					};
 					84F405351D2F788E000A0A05 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -625,6 +625,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = G583SJY324;
 				INFOPLIST_FILE = TestPhotoKit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -640,6 +641,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = G583SJY324;
 				INFOPLIST_FILE = TestPhotoKit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

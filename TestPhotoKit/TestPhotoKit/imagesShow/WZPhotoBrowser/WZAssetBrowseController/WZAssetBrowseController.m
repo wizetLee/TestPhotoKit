@@ -10,7 +10,7 @@
 #import "WZAssetBrowseNavigationView.h"
 #import "WZAssetBrowseToolView.h"
 
-@interface WZAssetBrowseController ()
+@interface WZAssetBrowseController ()<UIScrollViewDelegate>
 
 @property (nonatomic, strong) WZAssetBrowseNavigationView *navigationView;//顶部导航条
 @property (nonatomic, strong) WZAssetBrowseToolView *toolView;//底部工具条
@@ -34,7 +34,9 @@
     [self.view addSubview:self.toolView];
     [self caculateSelected];
     self.view.backgroundColor = [UIColor blackColor];
+ 
 }
+
 
 #pragma mark - WZProtocolAssetBrowseNaviagtion
 - (void)backAction {
@@ -140,6 +142,8 @@
        
     }
 }
+
+
 
 #pragma mark - private method
 - (void)caculateSelected {
